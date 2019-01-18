@@ -26,6 +26,9 @@ def read_all_controller_inputs():
 	button_y = controller.getRawButton(2)
 	state["activating_lift"] = button_y
 
+	#piston tube
+	button_b = controller.getRawButton(3)
+	state["push"] = button_b
 
-
-
+	button_a = controller.getRawButton(4)
+	state["pull"] = button_a

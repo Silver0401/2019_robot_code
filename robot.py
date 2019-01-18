@@ -16,6 +16,10 @@ class MyRobot(wpilib.TimedRobot):
 		self.rearLeftMotor = wpilib.Talon(1)
 		self.frontRightMotor = wpilib.Talon(2)
 		self.rearRightMotor = wpilib.Talon(3)
+		
+		#push tube
+		
+		self.piston = wpilib.Talon(6)
 
 		self.lift_motor = wpilib.Talon(4)
 		self.cargo_motor = wpilib.Talon(5)
@@ -89,6 +93,24 @@ class MyRobot(wpilib.TimedRobot):
 			state["timer_lift"] = 0
 			self.lift_motor.set(0)
 			self.cargo_motor.set(0)
+
+#Piston retractil doble super cargado de energía 
+		
+		if state["push"]:
+			self.piston.set(1)
+
+		if state["pull"]:
+			state["timer_piston"] += 1
+			if state["timer_piston"] <= 100:
+		 		self.piston.set(-1)
+
+			
+			else:
+				self.piston.set(0)
+				print (state)
+
+		else:
+			state["timer_piston"] = 0
 
 #funcion para correr el código del robot utlizando
 # este archivo como el principal
