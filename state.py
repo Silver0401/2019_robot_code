@@ -7,6 +7,6 @@ state = {
 	"mov_y": 0,
 	"mov_z": 0,
 	"activating_lift":False,
-	"timer_lift": 0 
-
+	"timer_lift": 0,
+	"counter": 0
 }

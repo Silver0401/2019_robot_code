@@ -18,13 +18,15 @@ def read_all_controller_inputs():
 	z = controller.getZ()
 	state["mov_z"] = z
 
-	button_x = controller.getRawButton(1)
+	button_x = controller.getRawButton(3)
 	state["button_x_active"] = button_x
 
 	#Lift_inputs
 
-	button_y = controller.getRawButton(2)
+	button_y = controller.getRawButton(4)
 	state["activating_lift"] = button_y
+
+
 
 
 
