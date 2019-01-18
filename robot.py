@@ -4,7 +4,7 @@ from wpilib.drive import MecanumDrive
 from state import state
 import oi
 import time
-import pygame
+
 
 
 class MyRobot(wpilib.TimedRobot):
@@ -20,7 +20,8 @@ class MyRobot(wpilib.TimedRobot):
 		self.rearRightMotor = wpilib.Talon(3)
 
 		self.lift_motor = wpilib.Talon(4)
-		self.cargo_motor = wpilib.Talon(5)
+		self.up_claw_motor = wpilib.Talon(5)
+		self.down_claw_motor = wpilib.Talon(6)
 
 		#sensores
 
@@ -72,25 +73,78 @@ class MyRobot(wpilib.TimedRobot):
 		else:
 			self.drive.driveCartesian(powerX, powerY, powerZ, 0)
 			
-		#código para el funcionamiento del elevador y la garra
+		#código para el funcionamiento del elevador y la garra. Hatch pannel bajo.
         
-		if state["activating_lift"]:
-			state["timer_lift"] += 1
-			if state["timer_lift"] <= 100:
+		if state["activating_lift_short"]:
+			state["timer_lift_short"] += 1
+			if state["timer_lift_short"] <= 100:
 				self.lift_motor.set(1)
-			elif state["timer_lift"] <= 200:
+			elif state["timer_lift_short"] <= 200:
 				self.lift_motor.set(0)
-				self.cargo_motor.set(-1)
-			elif state["timer_lift"] <= 300:
+				self.up_claw_motor.set(.4)
+				self.down_claw_motor.set(-.4)
+			elif state["timer_lift_short"] <= 300:
+				self.lift_motor.set(0)
+				self.up_claw_motor.set(-.4)
+				self.down_claw_motor.set(.4)
+			elif state["timer_lift_short"] <= 400:
 				self.lift_motor.set(-1)
-				self.cargo_motor.set(0)
+				self.up_claw_motor.set(0)
+				self.down_claw_motor.set(0)
 			else:
 				self.lift_motor.set(0)
-				self.cargo_motor.set(0)
 		else:
-			state["timer_lift"] = 0
+			state["timer_lift_short"] = 0
 			self.lift_motor.set(0)
-			self.cargo_motor.set(0)
+
+
+		#código para el funcionamiento del elevador y la garra. Hatch pannel medio. 
+
+		if state["activating_lift_middle"]:
+			state["timer_lift_middle"] += 1
+			if state["timer_lift_middle"] <= 150:
+				self.lift_motor.set(1)
+			elif state["timer_lift_middle"] <= 250:
+				self.lift_motor.set(0)
+				self.up_claw_motor.set(.4)
+				self.down_claw_motor.set(-.4)
+			elif state["timer_lift_middle"] <= 350:
+				self.lift_motor.set(0)
+				self.up_claw_motor.set(-.4)
+				self.down_claw_motor.set(.4)
+			elif state["timer_lift_middle"] <= 500:
+				self.lift_motor.set(-1)
+				self.up_claw_motor.set(0)
+				self.down_claw_motor.set(0)
+			else:
+				self.lift_motor.set(0)
+		else:
+			state["timer_lift_middle"] = 0
+
+
+		#código para el funcionamiento del elevador y la garra. Hatch pannel alto.
+
+		if state["activating_lift_taller"]:
+			state["timer_lift_taller"] += 1
+			if state["timer_lift_taller"] <= 200:
+				self.lift_motor.set(1)
+			elif state["timer_lift_taller"] <= 300:
+				self.lift_motor.set(0)
+				self.up_claw_motor.set(.4)
+				self.down_claw_motor.set(-.4)
+			elif state["timer_lift_taller"] <= 400:
+				self.lift_motor.set(0)
+				self.up_claw_motor.set(-.4)
+				self.down_claw_motor.set(.4)
+			elif state["timer_lift_taller"] <= 600:
+				self.lift_motor.set(-1)
+				self.up_claw_motor.set(0)
+				self.down_claw_motor.set(0)
+			else:
+				self.lift_motor.set(0)
+		else:
+			state["timer_lift_taller"] = 0
+
 
 #funcion para correr el código del robot utlizando
 # este archivo como el principal

@@ -6,7 +6,12 @@ state = {
 	"mov_x": 0,
 	"mov_y": 0,
 	"mov_z": 0,
-	"activating_lift":False,
-	"timer_lift": 0,
+	"activating_lift_short": False,
+	"activating_lift_middle": False,
+	"activating_lift_taller": False,
+	"timer_lift_short": 0,
+	"timer_lift_middle": 0,
+	"timer_lift_taller": 0,
 	"counter": 0
+
 }

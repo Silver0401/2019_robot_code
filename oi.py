@@ -21,11 +21,16 @@ def read_all_controller_inputs():
 	button_x = controller.getRawButton(3)
 	state["button_x_active"] = button_x
 
-	#Lift_inputs
+	#Lift_inputs and claw_inputs
 
 	button_y = controller.getRawButton(4)
-	state["activating_lift"] = button_y
+	state["activating_lift_short"] = button_y
 
+	button_a = controller.getRawButton(1)
+	state["activating_lift_middle"] = button_a
+
+	button_b = controller.getRawButton(2)
+	state["activating_lift_taller"] =  button_b
 
 
 
