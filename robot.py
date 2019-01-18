@@ -4,11 +4,13 @@ from wpilib.drive import MecanumDrive
 from state import state
 import oi
 import time
+import pygame
 
 
 class MyRobot(wpilib.TimedRobot):
 
 	def robotInit(self):
+
 
 		#motores
 
@@ -52,13 +54,13 @@ class MyRobot(wpilib.TimedRobot):
 		#código para el funcionamiento del movimiento
 		# de las mecanum a través del control de xbox
 
-		x = state["mov_x"]
-		y = state["mov_y"]
-		z = state["mov_z"]
+		x = state["mov_x"] * .7
+		y = state["mov_y"] * .7
+		z = state["mov_z"] * .7
 
-		powerX = 0 if x < 0.05 and x > -0.05 else x
-		powerY = 0 if y < 0.05 and y > -0.05 else y
-		powerZ = 0 if z < 0.05 and z > -0.05 else z
+		powerX = 0 if x < 0.15 and x > -0.15 else x
+		powerY = 0 if y < 0.15 and y > -0.15 else y
+		powerZ = 0 if z < 0.15 and z > -0.15 else z
 	
 
 		if state["button_x_active"]:
