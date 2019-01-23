@@ -40,6 +40,8 @@ class MyRobot(wpilib.TimedRobot):
 		self.frontLeftMotor.setInverted(True)
 		self.rearLeftMotor.setInverted(True)
 
+		self.timer = wpilib.Timer()
+
 		#Unión de los motores para su funcionamiento
 		# en conjunto de mecaunm
 
@@ -48,6 +50,48 @@ class MyRobot(wpilib.TimedRobot):
 			self.rearLeftMotor,
 			self.frontRightMotor,
 			self.rearRightMotor)
+
+	def autonomousInit(self):
+		"""This function is run once each time the robot enters autonomous mode."""
+		self.timer.reset()
+		self.timer.start()
+		
+	def autonomousPeriodic(self):
+		"""This function is called periodically during autonomous."""
+
+		# Avanzar 2.5s girar 1s avanzar 1s girar 1s avanzar 3s girar 1s avanzar 2s
+		if self.timer.get() < 2.5:
+			self.drive.driveCartesian(1,0,0,0)
+
+		elif self.timer.get() > 2.5 and self.timer.get() < 3.5:
+			self.drive.driveCartesian(0,0,1,0)
+
+		elif self.timer.get() > 3.5 and self.timer.get() < 4.5:
+			self.drive.driveCartesian(1,0,0,0)
+
+		elif self.timer.get() > 4.5 and self.timer.get() < 5.5:
+			self.drive.driveCartesian(0,0,1,0)
+
+		elif self.timer.get() > 5.5 and self.timer.get() < 6.5:
+			self.drive.driveCartesian(1,0,0,0)
+
+		elif self.timer.get() > 6.5 and self.timer.get() < 9.5:
+			self.drive.driveCartesian(1,0,0,0)
+
+		elif self.timer.get() > 9.5 and self.timer.get() < 10.5:
+			self.drive.driveCartesian(0,0,1,0)
+
+		elif self.timer.get() > 10.5 and self.timer.get() < 12.5:
+			self.drive.driveCartesian(1,0,0,0)
+
+		# elif self.timer.get() > 26.5 and self.timer.get() < 29.5:
+		# 	self.drive.driveCartesian(1,0,0,0)
+		# elif self.timer.get() > 29.5 and self.timer.get() < 31.5:
+		# 	self.drive.driveCartesian(0,0,-1,0)
+		else:
+			self.drive.driveCartesian(0,0,0,0)
+			#gire en direccion contraria en z 8 seg, avanza por 5 seg gira a la derecha 2 seg avanza 3 gira a la izq 2 seg
+					
 										
 	def teleopPeriodic(self):   
 
