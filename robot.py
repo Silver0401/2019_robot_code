@@ -7,6 +7,7 @@ import time
 
 
 
+
 class MyRobot(wpilib.TimedRobot):
 
 	def robotInit(self):
@@ -26,9 +27,9 @@ class MyRobot(wpilib.TimedRobot):
 		self.up_claw_motor = wpilib.Talon(5)
 		self.down_claw_motor = wpilib.Talon(6)
 
-		#push tube		
+		#push tube
 		
-		self.piston = wpilib.Talon(7)
+		self.piston = wpilib.Solenoid(1, 2)
 
 		#sensores
 
@@ -153,23 +154,10 @@ class MyRobot(wpilib.TimedRobot):
 			state["timer_lift_taller"] = 0
 
 
-#Piston retractil doble super cargado de energía 
+		# Piston
 		
-		if state["push"]:
-			self.piston.set(1)
+		self.piston.set(state["is_pushing"])
 
-		if state["pull"]:
-			state["timer_piston"] += 1
-			if state["timer_piston"] <= 100:
-		 		self.piston.set(-1)
-
-			
-			else:
-				self.piston.set(0)
-				print (state)
-
-		else:
-			state["timer_piston"] = 0
 
 #funcion para correr el código del robot utlizando
 # este archivo como el principal

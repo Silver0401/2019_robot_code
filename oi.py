@@ -1,6 +1,6 @@
 from state import state
-import wpilib
-
+import wpilib 
+import ControlPico as robot_controller
 
 def read_all_controller_inputs():
 
@@ -23,22 +23,26 @@ def read_all_controller_inputs():
 
 	#Lift_inputs and claw_inputs
 
-	button_y = controller.getRawButton(2)
+	button_y = controller.getRawButton(5)
 	state["activating_lift_short"] = button_y
 
 	button_a = controller.getRawButton(3)
 	state["activating_lift_middle"] = button_a
 
-	button_W = controller.getRawButton(4)
+	button_W = controller.getRawButton(6)
 	state["activating_lift_taller"] =  button_W
 
 
-	#piston tube
-	button_b = controller.getRawButton(6)  
-	state["push"] = button_b
+	#piston_tube
 
-	button_R = controller.getRawButton(5)
-	state["pull"] = button_R
+	button_b_is_pressed = controller.getRawButton(robot_controller.prender_piston)  
+	button_r_is_pressed = controller.getRawButton(robot_controller.apagar_piston)
+
+	if button_b_is_pressed or state["is_pushing"]:
+		state["is_pushing"] = True
+
+	if button_r_is_pressed or not state["is_pushing"]:
+		state["is_pushing"] = False
 
 
 
