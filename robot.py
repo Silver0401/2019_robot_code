@@ -14,10 +14,10 @@ class MyRobot(wpilib.TimedRobot):
 
 		#motores
 
-		self.frontLeftMotor = wpilib.Talon(0)
-		self.rearLeftMotor = wpilib.Talon(1)
-		self.frontRightMotor = wpilib.Talon(2)
-		self.rearRightMotor = wpilib.Talon(3)
+		self.front_left_motor = wpilib.Talon(0)
+		self.rear_left_motor = wpilib.Talon(1)
+		self.front_right_motor = wpilib.Talon(2)
+		self.rear_right_motor = wpilib.Talon(3)
 		
 
 		#lift_claw_motors
@@ -37,8 +37,8 @@ class MyRobot(wpilib.TimedRobot):
 		self.sensor_derecho = wpilib.DigitalInput(3)
 		#invertidores de motores
 
-		self.frontLeftMotor.setInverted(True)
-		self.rearLeftMotor.setInverted(True)
+		self.front_left_motor.setInverted(True)
+		self.rear_left_motor.setInverted(True)
 
 		self.timer = wpilib.Timer()
 
@@ -46,10 +46,10 @@ class MyRobot(wpilib.TimedRobot):
 		# en conjunto de mecaunm
 
 		self.drive = MecanumDrive(
-			self.frontLeftMotor,
-			self.rearLeftMotor,
-			self.frontRightMotor,
-			self.rearRightMotor)
+			self.front_left_motor,
+			self.rear_left_motor,
+			self.front_right_motor,
+			self.rear_right_motor)
 
 	def autonomousInit(self):
 		"""This function is run once each time the robot enters autonomous mode."""
