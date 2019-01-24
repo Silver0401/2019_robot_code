@@ -11,7 +11,7 @@ class MyRobot(wpilib.TimedRobot):
 
 	def robotInit(self):
 
-
+		self.timer = wpilib.Timer()
 		#motores
 
 		self.frontLeftMotor = wpilib.Talon(0)
@@ -48,8 +48,24 @@ class MyRobot(wpilib.TimedRobot):
 			self.rearLeftMotor,
 			self.frontRightMotor,
 			self.rearRightMotor)
+
+	def autonomosinit(self):
+		self.timer.start()
+	def autonomousPeriodic(self):
+		
+		if self.timer.get() < 2.5:
+			self.drive.driveCartesian(0, 0.3, 0, 0)
+		elif self.timer.get() < 10:
+			self.drive.driveCartesian(0, 0, 0, 0)
+
+  # elif self.timer.get() > 26.5 and self.timer.get() < 29.5:
+  #  self.drive.driveCartesian(1,0,0,0)
+  # elif self.timer.get() > 29.5 and self.timer.get() < 31.5:
+  #  self.drive.driveCartesian(0,0,-1,0)
+		else:
+			self.drive.driveCartesian(0,0,0,0)
 										
-	def teleopPeriodic(self):   
+	def teleopPeriodic(self):	
 
 		#se leen constantemente los botones y joysticks
 
@@ -60,7 +76,7 @@ class MyRobot(wpilib.TimedRobot):
 
 		x = state["mov_x"] * .7
 		y = state["mov_y"] * .7
-		z = state["mov_z"] * .7
+		z = state["mov_z"] * .5
 
 		powerX = 0 if x < 0.15 and x > -0.15 else x
 		powerY = 0 if y < 0.15 and y > -0.15 else y
@@ -78,10 +94,10 @@ class MyRobot(wpilib.TimedRobot):
 				self.drive.driveCartesian(0, -0.5, 0, 0)
 
 		else:
-			self.drive.driveCartesian(powerX, powerY, powerZ, 0)
+			self.drive.driveCartesian(powerX, powerY, -powerZ, 0)
 			
 		#código para el funcionamiento del elevador y la garra. Hatch pannel bajo.
-        
+		
 		if state["activating_lift_short"]:
 			state["timer_lift_short"] += 1
 			if state["timer_lift_short"] <= 100:
@@ -154,14 +170,25 @@ class MyRobot(wpilib.TimedRobot):
 
 
 #Piston retractil doble super cargado de energía 
-		
+	
+
+
+		if state["push"]:
+			if self.piston.get() == 0:
+				self.piston.set(1)
+			else:
+				self.piston.get() == 1
+				self.piston.set(0)
+
+	"""	
+
 		if state["push"]:
 			self.piston.set(1)
 
 		if state["pull"]:
 			state["timer_piston"] += 1
 			if state["timer_piston"] <= 100:
-		 		self.piston.set(-1)
+				self.piston.set(-1)
 
 			
 			else:
@@ -170,6 +197,7 @@ class MyRobot(wpilib.TimedRobot):
 
 		else:
 			state["timer_piston"] = 0
+			"""
 
 #funcion para correr el código del robot utlizando
 # este archivo como el principal
