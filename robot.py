@@ -64,7 +64,7 @@ class MyRobot(wpilib.TimedRobot):
 
 
 	def autonomousInit(self):
-		"""This function is run once each time the robot enters autonomous mode."""
+
 		self.timer.reset()
 		self.timer.start()
 		
@@ -123,7 +123,7 @@ class MyRobot(wpilib.TimedRobot):
 		powerZ = 0 if z < 0.15 and z > -0.15 else z
 	
 
-		if state["button_x_active"]:
+		if state["align_activated"]:
 			if self.sensor_principal.get():
 				self.drive.driveCartesian(0, 0, 0, 0)
 			elif self.sensor_izquierdo.get():

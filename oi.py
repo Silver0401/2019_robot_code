@@ -1,6 +1,6 @@
 from state import state
 import wpilib 
-import ControlPico as robot_controller
+import ControlPico as Controller_inputs
 
 def read_all_controller_inputs():
 
@@ -18,35 +18,32 @@ def read_all_controller_inputs():
 	z = controller.getRawAxis(4)
 	state["mov_z"] = z
 
-	button_x = controller.getRawButton(4)
-	state["button_x_active"] = button_x
+	button_1 = controller.getRawButton(3)
+	state["align_activated"] = button_1
 
 	#Lift_inputs and claw_inputs
 
-	button_y = controller.getRawButton(5)
-	state["activating_lift_short"] = button_y
+	button_2 = controller.getRawButton(4)
+	state["activating_lift_short"] = button_2
 
-	button_a = controller.getRawButton(3)
-	state["activating_lift_middle"] = button_a
+	button_3 = controller.getRawButton(5)
+	state["activating_lift_middle"] = button_3
 
-	button_W = controller.getRawButton(6)
-	state["activating_lift_taller"] =  button_W
-
-
-	#piston_tube_configuration
-
-	boton_a = controller.getRawButton(2)
-	state["boton_a"] = boton_a
-
-	button_b_is_pressed = controller.getRawButton(robot_controller.prender_piston)  
-	button_r_is_pressed = controller.getRawButton(robot_controller.apagar_piston)
+	button_4 = controller.getRawButton(6)
+	state["activating_lift_taller"] =  button_4
 
 
-	if button_b_is_pressed or state["is_pushing"] == 1:
+	#piston tube configuration as well as inputs
+
+	button_5_is_pressed = controller.getRawButton(Controller_inputs.prender_piston)  
+	button_6_is_pressed = controller.getRawButton(Controller_inputs.apagar_piston)
+
+
+	if button_5_is_pressed or state["is_pushing"] == 1:
 		state["is_pushing"] = 1
 
 
-	if  button_r_is_pressed:
+	if  button_6_is_pressed:
 		state["timer_piston"] += 1
 		if state["timer_piston"] <= 100:
 			state["is_pushing"] = 2
