@@ -1,5 +1,5 @@
 #Lugar donde se guardan  y declaran las variables 
-# utilizadas a través del control.
+# utilizadas a través del control, entre otras.
 
 state = {
 

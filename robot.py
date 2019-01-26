@@ -27,7 +27,7 @@ class MyRobot(wpilib.TimedRobot):
 
 		self.timer = wpilib.Timer()
 
-		# Motores
+		# Motores del Chasis
 
 		self.front_left_motor = wpilib.Talon(0)
 		self.rear_left_motor = wpilib.Talon(1)
@@ -40,7 +40,7 @@ class MyRobot(wpilib.TimedRobot):
 		self.piston = wpilib.DoubleSolenoid(0,0,1)
 
 
-		#lift_claw_motors
+		#lift and claw motors
 
 		self.lift_motor = wpilib.Talon(4)
 		self.up_claw_motor = wpilib.Talon(5)
@@ -217,8 +217,6 @@ class MyRobot(wpilib.TimedRobot):
 			self.Compressor.start()
 		else:
 			self.Compressor.stop()
-
-
 
 
 #funcion para correr el código del robot utlizando
