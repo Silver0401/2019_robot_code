@@ -7,18 +7,38 @@ import time
 
 
 
+
 class MyRobot(wpilib.TimedRobot):
 
 	def robotInit(self):
 
-		self.timer = wpilib.Timer()
-		#motores
+#________________________________________________________________________________
 
-		self.frontLeftMotor = wpilib.Talon(0)
-		self.rearLeftMotor = wpilib.Talon(1)
-		self.frontRightMotor = wpilib.Talon(2)
-		self.rearRightMotor = wpilib.Talon(3)
+		#Inicializadores_de_PCM (en caso de que no arranque el PCM)
+
+		# self.Compressor.setClosedLoopControl(True)
+		# self.enabled = self.Compressor.enabled()
+		# self.PSV = self.Compressor.getPressureSwitchValue()
 		
+#________________________________________________________________________________
+
+
+		# Contador
+
+		self.timer = wpilib.Timer()
+
+		# Motores
+
+		self.front_left_motor = wpilib.Talon(0)
+		self.rear_left_motor = wpilib.Talon(1)
+		self.front_right_motor = wpilib.Talon(2)
+		self.rear_right_motor = wpilib.Talon(3)
+
+		#Push tube
+		
+		self.Compressor = wpilib.Compressor(0)
+		self.piston = wpilib.DoubleSolenoid(0,0,1)
+
 
 		#lift_claw_motors
 
@@ -26,46 +46,38 @@ class MyRobot(wpilib.TimedRobot):
 		self.up_claw_motor = wpilib.Talon(5)
 		self.down_claw_motor = wpilib.Talon(6)
 
-		#push tube		
-		
-		self.piston = wpilib.Talon(7)
-
 		#sensores
 
 		self.sensor_izquierdo = wpilib.DigitalInput(1)
 		self.sensor_principal = wpilib.DigitalInput(2)
 		self.sensor_derecho = wpilib.DigitalInput(3)
-		#invertidores de motores
 
-		self.frontLeftMotor.setInverted(True)
-		self.rearLeftMotor.setInverted(True)
 
 		#Unión de los motores para su funcionamiento
 		# en conjunto de mecaunm
 
 		self.drive = MecanumDrive(
-			self.frontLeftMotor,
-			self.rearLeftMotor,
-			self.frontRightMotor,
-			self.rearRightMotor)
+			self.front_left_motor,
+			self.rear_left_motor,
+			self.front_right_motor,
+			self.rear_right_motor)
 
-	def autonomosinit(self):
+
+	def autonomousInit(self):
+		"""This function is run once each time the robot enters autonomous mode."""
+		self.timer.reset()
 		self.timer.start()
-	def autonomousPeriodic(self):
 		
-		if self.timer.get() < 2.5:
-			self.drive.driveCartesian(0, 0.3, 0, 0)
-		elif self.timer.get() < 10:
-			self.drive.driveCartesian(0, 0, 0, 0)
+	def autonomousPeriodic(self):
+		"""This function is called periodically during autonomous."""
 
-  # elif self.timer.get() > 26.5 and self.timer.get() < 29.5:
-  #  self.drive.driveCartesian(1,0,0,0)
-  # elif self.timer.get() > 29.5 and self.timer.get() < 31.5:
-  #  self.drive.driveCartesian(0,0,-1,0)
-		else:
-			self.drive.driveCartesian(0,0,0,0)
+		pass
+		# Avanzar 2.5s girar 1s avanzar 1s girar 1s avanzar 3s girar 1s avanzar 2s
+
+
 										
 	def teleopPeriodic(self):	
+
 
 		#se leen constantemente los botones y joysticks
 
@@ -94,9 +106,9 @@ class MyRobot(wpilib.TimedRobot):
 				self.drive.driveCartesian(0, -0.5, 0, 0)
 
 		else:
-			self.drive.driveCartesian(powerX, powerY, -powerZ, 0)
+			self.drive.driveCartesian(powerX, -powerY, powerZ, 0)
 			
-		#código para el funcionamiento del elevador y la garra. Hatch pannel bajo.
+		# Hatch pannel bajo. Código para el funcionamiento del elevador y la garra.
 		
 		if state["activating_lift_short"]:
 			state["timer_lift_short"] += 1
@@ -121,7 +133,7 @@ class MyRobot(wpilib.TimedRobot):
 			self.lift_motor.set(0)
 
 
-		#código para el funcionamiento del elevador y la garra. Hatch pannel medio. 
+		# Hatch pannel medio. Código para el funcionamiento del elevador y la garra.  
 
 		if state["activating_lift_middle"]:
 			state["timer_lift_middle"] += 1
@@ -145,7 +157,7 @@ class MyRobot(wpilib.TimedRobot):
 			state["timer_lift_middle"] = 0
 
 
-		#código para el funcionamiento del elevador y la garra. Hatch pannel alto.
+		# Hatch pannel alto. Código para el funcionamiento del elevador y la garra.
 
 		if state["activating_lift_taller"]:
 			state["timer_lift_taller"] += 1
@@ -169,35 +181,17 @@ class MyRobot(wpilib.TimedRobot):
 			state["timer_lift_taller"] = 0
 
 
-#Piston retractil doble super cargado de energía 
-	
+		# codigo_del_piston
 
+		self.piston.set(state["is_pushing"])
 
-		if state["push"]:
-			if self.piston.get() == 0:
-				self.piston.set(1)
-			else:
-				self.piston.get() == 1
-				self.piston.set(0)
-
-	"""	
-
-		if state["push"]:
-			self.piston.set(1)
-
-		if state["pull"]:
-			state["timer_piston"] += 1
-			if state["timer_piston"] <= 100:
-				self.piston.set(-1)
-
-			
-			else:
-				self.piston.set(0)
-				print (state)
-
+		if state["is_pushing"] == 1:
+			self.Compressor.start()
 		else:
-			state["timer_piston"] = 0
-			"""
+			self.Compressor.stop()
+
+
+
 
 #funcion para correr el código del robot utlizando
 # este archivo como el principal

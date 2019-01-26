@@ -1,0 +1,14 @@
+nivel_1_soltar_pelota = 1
+nivel_2_soltar_pelota = 2
+nivel_3_soltar_pelota = 3
+nivel_1_soltar_pelota = 4
+nivel_2_soltar_pelota = 5
+nivel_3_soltar_pelota = 6
+boton_prender_piston = 7
+boton_apagar_piston = 8
+boton_prender_wheeler =9 
+boton_apagar_wheeler = 10
+subir_plataforma = 11
+bajar_plataforma = 12
+turbo = 13
+acomodarse =3245 
