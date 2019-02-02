@@ -1,17 +1,25 @@
 
-
 from state import state
 import wpilib 
-import ControlPico as Controller_inputs
+import PacificRim as Controller_inputs
 
-def read_control_inputs():
 
-	chasis_controller = wpilib.Joystick(1)
-	abilities_controller = wpilib.Joystick(0)
+def read_control_inputs(tipo_de_control):
 
-def read_chasis_inputs():
+	if tipo_de_control == "PacificRim":
 
-	chasis_controller = wpilib.Joystick(1)
+		read_chasis_inputs(0)
+		read_abilities_inputs(1)
+
+	elif tipo_de_control == "ControlPico" or tipo_de_control == "ConrolPelon":
+
+		read_abilities_inputs(0)
+		read_chasis_inputs(0)
+	
+
+def read_chasis_inputs(puerto_del_control):
+
+	chasis_controller = wpilib.Joystick(puerto_del_control)
 
 	x = chasis_controller.getX()
 	state["mov_x"] = x
@@ -25,45 +33,92 @@ def read_chasis_inputs():
 	button_1 = chasis_controller.getRawButton(Controller_inputs.acomodarse)
 	state["align_activated"] = button_1
 
-def read_abilities_inputs():
+def read_abilities_inputs(puerto_del_control):
 
-	abilities_controller = wpilib.Joystick(0)
+	# botones del elevador con pistones
 
-	button_2 = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_abajo)
-	state["activating_lift_short"] = button_2
+	abilities_controller = wpilib.Joystick(puerto_del_control)
 
-	#button_3 = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_medio)
-	#state["activating_lift_middle"] = button_3
+	button_12 = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_abajo1)
+	button_10 = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_medio1)
+	button_8 = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_alto1)
 
-	button_4 = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_alto)
-	state["activating_lift_taller"] =  button_4
+	# botones del elevador con garra
 
-	button_5 = abilities_controller.getRawButton(Controller_inputs.encoder)
-	state["encoder"] =  button_5
+	button_11 = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_abajo2)
+	button_9 = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_medio2)
+	button_7 = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_alto2)
 
-	#piston tube configuration as well as inputs
+	# funciones para el uso del elevador
 
+	if button_12:
+		state["posicion"] = 1
+		state["mecanismo"] = 1
+
+	elif button_10:
+
+		state["posicion"] = 2
+		state["mecanismo"] = 1			
+
+	elif button_8:
+
+		state["posicion"] = 3
+		state["mecanismo"] = 1
+
+
+	elif button_11:
+
+		state["posicion"] = 1
+		state["mecanismo"] = 2
+
+
+	elif button_9:
+
+		state["posicion"] = 2
+		state["mecanismo"] = 2
+
+
+	elif button_7:
+
+		state["posicion"] = 3
+		state["mecanismo"] = 2
+
+
+	#Inputs de Solenoides, pistones y compresoras
 	
 	Compressor_button = abilities_controller.getRawButton(7)
 	state["Compressor_activated"] = Compressor_button
 
-	turn_piston_on = abilities_controller.getRawButton(Controller_inputs.prender_piston)  
+	turn_double_piston_on = abilities_controller.getRawButton(Controller_inputs.prender_garra)  
+	turn_double_piston_off = abilities_controller.getRawButton(Controller_inputs.apagar_garra)
+	turn_piston_on = abilities_controller.getRawButton(Controller_inputs.prender_piston)
 	turn_piston_off = abilities_controller.getRawButton(Controller_inputs.apagar_piston)
 
 
-
-	if turn_piston_on or state["is_pushing"] == 1:
-		state["is_pushing"] = 1
+	#Configuracion para el uso de pistones
 
 
-	if  turn_piston_off:
-		state["timer_piston"] += 1
-		if state["timer_piston"] <= 100:
-			state["is_pushing"] = 2
+	if turn_piston_on or state["piston_activated"] == True:
+		state["piston_activated"] = True
+
+
+	if  turn_piston_off or state["piston_activated"] == False:
+			state["piston_activated"] = False
 
 
 
+	if turn_double_piston_on or state["claw_activated"] == 1:
+		state["claw_activated"] = 1
 
+
+	if  turn_double_piston_off or state["claw_activated"] == 2:
+			state["claw_activated"] = 2
+
+
+	#Encoders
+
+		# button_5 = abilities_controller.getRawButton(Controller_inputs.encoder)
+	# state["encoder"] =  button_5
 
 	
 

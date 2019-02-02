@@ -1,15 +1,20 @@
-nivel_1_soltar_pelota = 1
-nivel_2_soltar_pelota = 2
-nivel_3_soltar_pelota = 3
-nivel_1_soltar_pelota = 4
-#nivel_2_soltar_pelota = 5
-encoder = 5
-nivel_3_soltar_pelota = 6
-boton_prender_piston = 7
-boton_apagar_piston = 8
-boton_prender_wheeler =9 
-boton_apagar_wheeler = 10
-subir_plataforma = 11
-bajar_plataforma = 12
-turbo = 13
-acomodarse =3245 
+prender_piston = 3
+apagar_piston = 5 
+
+
+prender_garra = 4
+apagar_garra = 6
+
+subir_plataforma_abajo1 = 12
+subir_plataforma_medio1 = 10
+subir_plataforma_alto1 = 8
+
+subir_plataforma_abajo2 = 11
+subir_plataforma_medio2 = 9
+subir_plataforma_alto2 = 7
+
+
+
+turbo = 8
+
+acomodarse = 1

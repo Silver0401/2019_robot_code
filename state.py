@@ -3,6 +3,9 @@
 
 state = {
 
+	"posicion" :0,
+	"mecanismo": 0,
+
 #Variables del Chasis
 
 	"align_activated": False,
@@ -11,16 +14,14 @@ state = {
 	"mov_z": 0,
 
 #Variables del Piston
-
-	"is_pushing": 0,
+	
+	"piston_activated": False,
+	"claw_activated": 0,
 	"timer_piston":0,
 	"Compressor_activated": False,
 
 # Variables del Elevador
 
-	"activating_lift_short": False,
-	"activating_lift_middle": False,
-	"activating_lift_taller": False,
 	"timer_lift_short": 0,
 	"timer_lift_middle": 0,
 	"timer_lift_taller": 0,
