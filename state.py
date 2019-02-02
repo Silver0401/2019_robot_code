@@ -14,6 +14,7 @@ state = {
 
 	"is_pushing": 0,
 	"timer_piston":0,
+	"Compressor_activated": False,
 
 # Variables del Elevador
 
@@ -22,6 +23,7 @@ state = {
 	"activating_lift_taller": False,
 	"timer_lift_short": 0,
 	"timer_lift_middle": 0,
-	"timer_lift_taller": 0
+	"timer_lift_taller": 0,
+	"encoder": 0
 
 }

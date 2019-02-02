@@ -1,11 +1,14 @@
 
 import wpilib
+import threading
 from wpilib.drive import MecanumDrive
 from state import state
 import oi
 import time
-
-
+import pidcontroller
+from wpilib import Encoder, IterativeRobot
+import pidcommand
+#from wpilib.pidbase import PIDBase
 
 
 class MyRobot(wpilib.TimedRobot):
@@ -14,7 +17,12 @@ class MyRobot(wpilib.TimedRobot):
 
 #________________________________________________________________________________
 
-		#Inicializadores_de_PCM (en caso de que no arranque el PCM)
+		# Inicializadores_de_PCM (en caso de que no arranque el PCM)
+
+		self.Compressor = wpilib.Compressor(0)
+		self.double_piston = wpilib.DoubleSolenoid(0,0,1)
+		self.piston = wpilib.Solenoid(0,7)
+
 
 		# self.Compressor.setClosedLoopControl(True)
 		# self.enabled = self.Compressor.enabled()
@@ -24,6 +32,9 @@ class MyRobot(wpilib.TimedRobot):
 
 
 		# Contador
+		k4X = 2
+		self.ir = wpilib.DigitalInput(9)
+
 
 		self.timer = wpilib.Timer()
 
@@ -33,28 +44,25 @@ class MyRobot(wpilib.TimedRobot):
 		self.rear_left_motor = wpilib.Talon(1)
 		self.front_right_motor = wpilib.Talon(2)
 		self.rear_right_motor = wpilib.Talon(3)
-
-		#Push tube
 		
-		self.Compressor = wpilib.Compressor(0)
-		self.piston = wpilib.DoubleSolenoid(0,0,1)
-
 
 		#lift and claw motors
 
-		self.lift_motor = wpilib.Talon(4)
+		self.lift_motor = wpilib.Talon(7)
 		self.up_claw_motor = wpilib.Talon(5)
 		self.down_claw_motor = wpilib.Talon(6)
 
 		#sensores
 
-		self.sensor_izquierdo = wpilib.DigitalInput(1)
+		"""self.sensor_izquierdo = wpilib.DigitalInput(1)
 		self.sensor_principal = wpilib.DigitalInput(2)
-		self.sensor_derecho = wpilib.DigitalInput(3)
+		self.sensor_derecho = wpilib.DigitalInput(3)"""
 
 
 		#Unión de los motores para su funcionamiento
 		# en conjunto de mecaunm
+		self.motor1 = wpilib.Talon(4)
+		self.encoder = wpilib.Encoder(0,1, True, k4X)
 
 		self.drive = MecanumDrive(
 			self.front_left_motor,
@@ -63,53 +71,80 @@ class MyRobot(wpilib.TimedRobot):
 			self.rear_right_motor)
 
 
+
 	def autonomousInit(self):
 
 		self.timer.reset()
 		self.timer.start()
+		state["timer_piston"] = 0
 		
 	def autonomousPeriodic(self):
+		state["timer_piston"] += 1
 
-		# Avanzar 2.5s girar 1s avanzar 1s girar 1s avanzar 3s girar 1s avanzar 2s
-		if self.timer.get() < 2.5:
-			self.drive.driveCartesian(1,0,0,0)
 
-		elif self.timer.get() > 2.5 and self.timer.get() < 3.5:
-			self.drive.driveCartesian(0,0,1,0)
-
-		elif self.timer.get() > 3.5 and self.timer.get() < 4.5:
-			self.drive.driveCartesian(1,0,0,0)
-
-		elif self.timer.get() > 4.5 and self.timer.get() < 5.5:
-			self.drive.driveCartesian(0,0,1,0)
-
-		elif self.timer.get() > 5.5 and self.timer.get() < 6.5:
-			self.drive.driveCartesian(1,0,0,0)
-
-		elif self.timer.get() > 6.5 and self.timer.get() < 9.5:
-			self.drive.driveCartesian(1,0,0,0)
-
-		elif self.timer.get() > 9.5 and self.timer.get() < 10.5:
-			self.drive.driveCartesian(0,0,1,0)
-
-		elif self.timer.get() > 10.5 and self.timer.get() < 12.5:
-			self.drive.driveCartesian(1,0,0,0)
-
-		# elif self.timer.get() > 26.5 and self.timer.get() < 29.5:
-		# 	self.drive.driveCartesian(1,0,0,0)
-		# elif self.timer.get() > 29.5 and self.timer.get() < 31.5:
-		# 	self.drive.driveCartesian(0,0,-1,0)
+		if state["timer_piston"] < 400:
+			self.Compressor.start()
+		elif state["timer_piston"] < 500:
+			self.Compressor.stop()
+			self.piston.set(True)
+		elif state["timer_piston"] < 600:
+			self.piston.set(False)
+			self.double_piston.set(2)
+		elif state["timer_piston"] < 700:
+			self.double_piston.set(1)
+		elif state["timer_piston"]:
+			self.double_piston.set(0)
+ 
 		else:
-			self.drive.driveCartesian(0,0,0,0)
-			#gire en direccion contraria en z 8 seg, avanza por 5 seg gira a la derecha 2 seg avanza 3 gira a la izq 2 seg
+			self.Compressor.stop()
+			self.double_piston.set(0)
+			self.piston.set(False)
+
+
+		# # Avanzar 2.5s girar 1s avanzar 1s girar 1s avanzar 3s girar 1s avanzar 2s
+		# if self.timer.get() < 2.5:
+		# 	self.drive.driveCartesian(1,0,0,0)
+
+		# elif self.timer.get() > 2.5 and self.timer.get() < 3.5:
+		# 	self.drive.driveCartesian(0,0,1,0)
+
+		# elif self.timer.get() > 3.5 and self.timer.get() < 4.5:
+		# 	self.drive.driveCartesian(1,0,0,0)
+
+		# elif self.timer.get() > 4.5 and self.timer.get() < 5.5:
+		# 	self.drive.driveCartesian(0,0,1,0)
+
+		# elif self.timer.get() > 5.5 and self.timer.get() < 6.5:
+		# 	self.drive.driveCartesian(1,0,0,0)
+
+		# elif self.timer.get() > 6.5 and self.timer.get() < 9.5:
+		# 	self.drive.driveCartesian(1,0,0,0)
+
+		# elif self.timer.get() > 9.5 and self.timer.get() < 10.5:
+		# 	self.drive.driveCartesian(0,0,1,0)
+
+		# elif self.timer.get() > 10.5 and self.timer.get() < 12.5:
+		# 	self.drive.driveCartesian(1,0,0,0)
+
+		# # elif self.timer.get() > 26.5 and self.timer.get() < 29.5:
+		# # 	self.drive.driveCartesian(1,0,0,0)
+		# # elif self.timer.get() > 29.5 and self.timer.get() < 31.5:
+		# # 	self.drive.driveCartesian(0,0,-1,0)
+		# else:
+		# 	self.drive.driveCartesian(0,0,0,0)
+		# 	#gire en direccion contraria en z 8 seg, avanza por 5 seg gira a la derecha 2 seg avanza 3 gira a la izq 2 seg
 
 										
-	def teleopPeriodic(self):	
+	def teleopPeriodic(self):
 
 
 		#se leen constantemente los botones y joysticks
+		oi.read_chasis_inputs()
+		oi.read_abilities_inputs()
+		oi.read_control_inputs()
+		#pidcontroller.PIDController()
 
-		oi.read_all_controller_inputs()
+		#wpilib.DriverStation.reportWarning(str(self.ir.get()), False)
 
 		#código para el funcionamiento del movimiento
 		# de las mecanum a través del control de xbox
@@ -134,7 +169,7 @@ class MyRobot(wpilib.TimedRobot):
 				self.drive.driveCartesian(0, -0.5, 0, 0)
 
 		else:
-			self.drive.driveCartesian(powerX, -powerY, powerZ, 0)
+			self.drive.driveCartesian(0,0,0,0)
 			
 		# Hatch pannel bajo. Código para el funcionamiento del elevador y la garra.
 		
@@ -209,16 +244,27 @@ class MyRobot(wpilib.TimedRobot):
 			state["timer_lift_taller"] = 0
 
 
-		# codigo_del_piston
+			# piston
 
-		self.piston.set(state["is_pushing"])
+		self.double_piston.set(state["is_pushing"])
 
-		if state["is_pushing"] == 1:
+		if state["Compressor_activated"]:
 			self.Compressor.start()
 		else:
 			self.Compressor.stop()
 
+		if state["encoder"]:
+			if self.encoder.get() > -5000:
+				self.motor1.set(0)
+			else:
+				self.motor1.set(1)
+				wpilib.DriverStation.reportWarning(str(self.encoder.get()), False)
+		else:
+			self.motor1.set(0)
+			self.encoder.reset()
 
+			# wpilib.DriverStation.reportWarning(str(self.encoder.get()), False)
+			#wpilib.DriverStation.reportWarning(str(PIDController.rcw.get(self)), False)
 #funcion para correr el código del robot utlizando
 # este archivo como el principal
 
