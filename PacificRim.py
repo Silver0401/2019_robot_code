@@ -14,7 +14,5 @@ subir_plataforma_medio2 = 9
 subir_plataforma_alto2 = 7
 
 
-
-turbo = 8
-
+turbo = 2
 acomodarse = 1

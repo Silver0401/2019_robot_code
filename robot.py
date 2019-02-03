@@ -1,4 +1,6 @@
 
+#Librerias necesarias para el uso de todo el codigo
+
 import wpilib
 import threading
 from wpilib.drive import MecanumDrive
@@ -22,8 +24,8 @@ class MyRobot(wpilib.TimedRobot):
 
 		#Solenoides y Compresores
 		
-		self.PSV = self.Compressor.getPressureSwitchValue()
 		self.Compressor = wpilib.Compressor(0)
+		self.PSV = self.Compressor.getPressureSwitchValue()
 		self.double_piston = wpilib.DoubleSolenoid(0,0,1)
 		self.piston = wpilib.Solenoid(0,7)
 
@@ -54,9 +56,9 @@ class MyRobot(wpilib.TimedRobot):
 
 		#sensores
 
-		self.sensor_izquierdo = wpilib.DigitalInput(1)
-		self.sensor_principal = wpilib.DigitalInput(2)
-		self.sensor_derecho = wpilib.DigitalInput(3)
+		self.sensor_izquierdo = wpilib.DigitalInput(2)
+		self.sensor_principal = wpilib.DigitalInput(3)
+		self.sensor_derecho = wpilib.DigitalInput(4)
 
 
 		#Unión de los motores para su funcionamiento
@@ -114,17 +116,15 @@ class MyRobot(wpilib.TimedRobot):
 										
 	def teleopPeriodic(self):
 
-
 		#se leen constantemente los botones,joysticks y cambia de modalidades de controles
 		
 		oi.read_control_inputs("PacificRim")
 
-		# Funcionamiento del movimiento
-		# de las mecanum a través del control de xbox
+		# Funcionamiento del movimiento de las mecanum a través del control de xbox con y sin turbo
 
-		x = state["mov_x"] * .7
-		y = state["mov_y"] * .7
-		z = state["mov_z"] * .5
+		x = state["mov_x"] 
+		y = state["mov_y"] 
+		z = state["mov_z"] 
 
 		powerX = 0 if x < 0.15 and x > -0.15 else x
 		powerY = 0 if y < 0.15 and y > -0.15 else y
@@ -141,8 +141,12 @@ class MyRobot(wpilib.TimedRobot):
 			else:
 				self.drive.driveCartesian(0, -0.5, 0, 0)
 
+		elif state["turbo_activated"]:
+
+			self.drive.driveCartesian(powerX ,-powerY , powerZ * 0.8, 0)
+
 		else:
-			self.drive.driveCartesian(powerX,-powerY,powerZ,0)
+			self.drive.driveCartesian(powerX * 0.7,-powerY * 0.7, powerZ * 0.6, 0)
 			
 		# Hatch panel bajo; garra y piston
 		

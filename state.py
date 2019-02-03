@@ -8,6 +8,7 @@ state = {
 
 #Variables del Chasis
 
+	"turbo_activated": False,
 	"align_activated": False,
 	"mov_x": 0,
 	"mov_y": 0,

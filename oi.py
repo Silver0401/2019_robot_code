@@ -11,7 +11,7 @@ def read_control_inputs(tipo_de_control):
 		read_chasis_inputs(0)
 		read_abilities_inputs(1)
 
-	elif tipo_de_control == "ControlPico" or tipo_de_control == "ConrolPelon":
+	elif tipo_de_control == "ControlPico" or tipo_de_control == "ControlPelon":
 
 		read_abilities_inputs(0)
 		read_chasis_inputs(0)
@@ -32,6 +32,9 @@ def read_chasis_inputs(puerto_del_control):
 
 	button_1 = chasis_controller.getRawButton(Controller_inputs.acomodarse)
 	state["align_activated"] = button_1
+
+	button_2 = chasis_controller.getRawButton(Controller_inputs.turbo)
+	state["turbo_activated"] = button_2
 
 def read_abilities_inputs(puerto_del_control):
 
