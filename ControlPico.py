@@ -1,15 +1,18 @@
-prender_piston = 1
-apagar_piston = 2
-
-prender_wheeler = 1
-apagar_wheeler = 3
-
-subir_plataforma_abajo = 4
-encoder = 5
-#subir_plataforma_medio=5
-subir_plataforma_alto=7
+prender_piston = 3
+apagar_piston = 5 
 
 
-turbo = 8
+prender_garra = 4
+apagar_garra = 6
 
-acomodarse =9
+subir_plataforma_abajo1 = 12
+subir_plataforma_medio1 = 10
+subir_plataforma_alto1 = 8
+
+subir_plataforma_abajo2 = 11
+subir_plataforma_medio2 = 9
+subir_plataforma_alto2 = 7
+
+
+turbo = 2
+acomodarse = 1

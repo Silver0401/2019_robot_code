@@ -1,7 +1,7 @@
 
 from state import state
 import wpilib 
-import PacificRim as Controller_inputs
+import ControlPico as Controller_inputs
 
 
 def read_control_inputs(tipo_de_control):
@@ -61,7 +61,7 @@ def read_abilities_inputs(puerto_del_control):
 	elif button_10:
 
 		state["posicion"] = 2
-		state["mecanismo"] = 1			
+		state["mecanismo"] = 1
 
 	elif button_8:
 

@@ -118,7 +118,7 @@ class MyRobot(wpilib.TimedRobot):
 
 		#se leen constantemente los botones,joysticks y cambia de modalidades de controles
 		
-		oi.read_control_inputs("PacificRim")
+		oi.read_control_inputs("ControlPico")
 
 		# Funcionamiento del movimiento de las mecanum a través del control de xbox con y sin turbo
 
