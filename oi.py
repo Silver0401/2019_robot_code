@@ -27,8 +27,8 @@ def read_control_inputs(tipo_de_control):
 
 	else:
 
-		print ("te equivocaste al escribir el tipo de control")
-		wpilib.DriverStation.reportWarning(str("te equivocaste al escribir el tipo de control"),True)
+		print ("tipo de control inexistente")
+		wpilib.DriverStation.reportWarning(str("tipo de control inexistente"),True)
 
 
 def read_chasis_inputs(puerto_del_control):
@@ -130,8 +130,6 @@ def read_abilities_inputs(puerto_del_control):
 
 	#Encoders
 
-		# button_5 = abilities_controller.getRawButton(Controller_inputs.encoder)
-	# state["encoder"] =  button_5
 
 	
 
