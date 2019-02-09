@@ -2,15 +2,11 @@
 #Librerias necesarias para el uso de todo el codigo
 
 import wpilib
-import threading
 from wpilib.drive import MecanumDrive
 from state import state
 import oi
 import time
-import pidcontroller
-from wpilib import Encoder, IterativeRobot
-import pidcommand
-#from wpilib.pidbase import PIDBase
+
 
 
 class MyRobot(wpilib.TimedRobot):
@@ -31,12 +27,11 @@ class MyRobot(wpilib.TimedRobot):
 
 		# Encoders
 		
-		k4X = 2
 		self.ir = wpilib.DigitalInput(9)
 		self.motor1 = wpilib.Talon(4)
-		self.encoder = wpilib.Encoder(0,1, True, k4X)
+		self.encoder = wpilib.Encoder(3,4, True, 2)
 
-		# Contador
+		# Contador y Control
 
 		self.timer = wpilib.Timer()
 
@@ -56,9 +51,9 @@ class MyRobot(wpilib.TimedRobot):
 
 		#sensores
 
-		self.sensor_izquierdo = wpilib.DigitalInput(2)
-		self.sensor_principal = wpilib.DigitalInput(3)
-		self.sensor_derecho = wpilib.DigitalInput(4)
+		self.sensor_izquierdo = wpilib.DigitalInput(0)
+		self.sensor_principal = wpilib.DigitalInput(1)
+		self.sensor_derecho = wpilib.DigitalInput(2)
 
 
 		#Unión de los motores para su funcionamiento
@@ -118,7 +113,7 @@ class MyRobot(wpilib.TimedRobot):
 
 		#se leen constantemente los botones,joysticks y cambia de modalidades de controles
 		
-		oi.read_control_inputs("ControlPico")
+		oi.read_control_inputs(state["Controller"])
 
 		# Funcionamiento del movimiento de las mecanum a través del control de xbox con y sin turbo
 
@@ -239,8 +234,6 @@ class MyRobot(wpilib.TimedRobot):
 			self.encoder.reset()
 
 
-			# wpilib.DriverStation.reportWarning(str(self.encoder.get()), False)
-			#wpilib.DriverStation.reportWarning(str(PIDController.rcw.get(self)), False)
 #funcion para correr el código del robot utlizando
 # este archivo como el principal
 

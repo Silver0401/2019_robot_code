@@ -16,3 +16,4 @@ subir_plataforma_alto2 = 7
 
 turbo = 2
 acomodarse = 1
+

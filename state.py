@@ -3,8 +3,9 @@
 
 state = {
 
-	"posicion" :0,
-	"mecanismo": 0,
+# Control
+
+	"Controller": "PacificRim",
 
 #Variables del Chasis
 
@@ -26,6 +27,8 @@ state = {
 	"timer_lift_short": 0,
 	"timer_lift_middle": 0,
 	"timer_lift_taller": 0,
+	"posicion" :0,
+	"mecanismo": 0,
 	"encoder": 0
 
 }

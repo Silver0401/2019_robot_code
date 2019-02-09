@@ -1,7 +1,16 @@
 
 from state import state
 import wpilib 
-import ControlPico as Controller_inputs
+
+if state["Controller"] == "PacificRim":
+	import PacificRim as Controller_inputs
+
+elif state["Controller"] == "ControlPico":
+	import ControlPico as Controller_inputs
+
+elif state["Controller"] == "ControlPelon":
+	import ControlPelon as Controller_inputs
+
 
 
 def read_control_inputs(tipo_de_control):
@@ -15,7 +24,12 @@ def read_control_inputs(tipo_de_control):
 
 		read_abilities_inputs(0)
 		read_chasis_inputs(0)
-	
+
+	else:
+
+		print ("te equivocaste al escribir el tipo de control")
+		wpilib.DriverStation.reportWarning(str("te equivocaste al escribir el tipo de control"),True)
+
 
 def read_chasis_inputs(puerto_del_control):
 
@@ -104,15 +118,11 @@ def read_abilities_inputs(puerto_del_control):
 	if turn_piston_on or state["piston_activated"] == True:
 		state["piston_activated"] = True
 
-
 	if  turn_piston_off or state["piston_activated"] == False:
 			state["piston_activated"] = False
 
-
-
 	if turn_double_piston_on or state["claw_activated"] == 1:
 		state["claw_activated"] = 1
-
 
 	if  turn_double_piston_off or state["claw_activated"] == 2:
 			state["claw_activated"] = 2
