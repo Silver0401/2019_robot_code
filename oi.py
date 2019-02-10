@@ -1,4 +1,6 @@
 
+# Se importa el control requerido automáticamente
+
 from state import state
 import wpilib 
 
@@ -50,16 +52,25 @@ def read_chasis_inputs(puerto_del_control):
 	button_2 = chasis_controller.getRawButton(Controller_inputs.turbo)
 	state["turbo_activated"] = button_2
 
+
 def read_abilities_inputs(puerto_del_control):
 
-	# botones del elevador 
-
 	abilities_controller = wpilib.Joystick(puerto_del_control)
+
+	# botones del elevador 
 
 	button_lift_up = abilities_controller.getRawButton(Controller_inputs.subir_manualmente)
 	button_lift_down = abilities_controller.getRawButton(Controller_inputs.bajar_manualmente)
 	eje_t = abilities_controller.getZ()
 	eje_z =abilities_controller.getThrottle()
+
+	button_medio_piston = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_medio_piston)
+	button_alto_piston = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_alto_piston)
+
+	button_medio_garra = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_medio_garra)
+	button_alto_garra = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_alto_garra)
+
+	# Uso de los botones
 
 
 	if button_lift_up and state["Controller"] == "PacificRim" or state["Controller"] == "ControlPico" and eje_t > 0:
@@ -74,16 +85,6 @@ def read_abilities_inputs(puerto_del_control):
 		state["claw_motor"] = 0
 		state["lift_motor"] = 0
 
-	button_medio_piston = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_medio_piston)
-	button_alto_piston = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_alto_piston)
-
-
-	# botones del elevador con garra
-
-	button_medio_garra = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_medio_garra)
-	button_alto_garra = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_alto_garra)
-
-	# funciones para el uso del elevador
 
 
 	if button_medio_piston:

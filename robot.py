@@ -8,7 +8,6 @@ import oi
 import time
 
 
-
 class MyRobot(wpilib.TimedRobot):
 
 	def robotInit(self):
@@ -71,6 +70,7 @@ class MyRobot(wpilib.TimedRobot):
 		state["timer_piston"] = 0
 		
 	def autonomousPeriodic(self):
+
 		state["timer_piston"] += 1
 
 		# # Avanzar 2.5s girar 1s avanzar 1s girar 1s avanzar 3s girar 1s avanzar 2s
@@ -141,7 +141,8 @@ class MyRobot(wpilib.TimedRobot):
 		else:
 			self.drive.driveCartesian(powerX * 0.6,-powerY * 0.6, powerZ * 0.5, 0)
 
-		# Configuracion para el elevedaor
+
+		# Configuracion para el elevedaor tanto automáticamente como manual
 		
 		self.lift_motor.set(state["claw_motor"])
 		self.claw_motor.set(state["lift_motor"])
@@ -163,8 +164,6 @@ class MyRobot(wpilib.TimedRobot):
 				state["mecanismo"] = "neutral"
 				state["timer_lift_middle"] = 0
 
-
-
 		if state["posicion"] == "media" and state["mecanismo"] == "garra":
 			state["timer_lift_middle"] += 1
 			if state["timer_lift_middle"] < 100:
@@ -179,11 +178,7 @@ class MyRobot(wpilib.TimedRobot):
 				state["mecanismo"] = "neutral"
 				state["timer_lift_middle"] = 0
 
-
-
-
 		# Hatch panel alto; garra y piston
-
 
 		if state["posicion"] == "alta" and state["mecanismo"] == "piston":
 			state["timer_lift_taller"] += 1
@@ -199,8 +194,6 @@ class MyRobot(wpilib.TimedRobot):
 				state["mecanismo"] = "neutral"
 				state["timer_lift_taller"] = 0
 
-
-
 		if state["posicion"] == "alta" and state["mecanismo"] == "garra":
 			state["timer_lift_taller"] += 1
 			if state["timer_lift_taller"] < 100:
@@ -214,7 +207,6 @@ class MyRobot(wpilib.TimedRobot):
 				state["posicion"] = "neutral"
 				state["mecanismo"] = "neutral"
 				state["timer_lift_taller"] = 0
-
 
 
 
