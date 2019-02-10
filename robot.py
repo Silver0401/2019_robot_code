@@ -28,7 +28,6 @@ class MyRobot(wpilib.TimedRobot):
 		# Encoders
 		
 		self.ir = wpilib.DigitalInput(9)
-		self.motor1 = wpilib.Talon(4)
 		self.encoder = wpilib.Encoder(3,4, True, 2)
 
 		# Contador y Control
@@ -45,9 +44,8 @@ class MyRobot(wpilib.TimedRobot):
 
 		#lift and claw motors
 
-		self.lift_motor = wpilib.Talon(7)
-		self.up_claw_motor = wpilib.Talon(5)
-		self.down_claw_motor = wpilib.Talon(6)
+		self.lift_motor = wpilib.Talon(4)
+		self.claw_motor = wpilib.Talon(5)
 
 		#sensores
 
@@ -115,7 +113,7 @@ class MyRobot(wpilib.TimedRobot):
 		
 		oi.read_control_inputs(state["Controller"])
 
-		# Funcionamiento del movimiento de las mecanum a través del control de xbox con y sin turbo
+		# Movimiento manual de las mecanum, align y turbo
 
 		x = state["mov_x"] 
 		y = state["mov_y"] 
@@ -141,70 +139,83 @@ class MyRobot(wpilib.TimedRobot):
 			self.drive.driveCartesian(powerX ,-powerY , powerZ * 0.8, 0)
 
 		else:
-			self.drive.driveCartesian(powerX * 0.7,-powerY * 0.7, powerZ * 0.6, 0)
-			
-		# Hatch panel bajo; garra y piston
-		
-		if state["posicion"] == 1 and state["mecanismo"] == 1:
-			state["timer_lift_short"] += 1
-			if state["timer_lift_short"] < 100:
-				print ("en posicion baja")
-			elif state["timer_lift_short"] < 200:
-				state["piston_activated"] = False
-			else:
-				state["timer_lift_short"] = 0
+			self.drive.driveCartesian(powerX * 0.6,-powerY * 0.6, powerZ * 0.5, 0)
 
-		elif state["posicion"] == 1 and state["mecanismo"] == 2:
-			state["timer_lift_short"] += 1
-			if state["timer_lift_short"] < 100:
-				print ("en posicion baja")
-			elif state["timer_lift_short"] < 200:
-				state["claw_activated"] = 2
-			else:
-				state["timer_lift_short"] = 0
+		# Configuracion para el elevedaor
+		
+		self.lift_motor.set(state["claw_motor"])
+		self.claw_motor.set(state["lift_motor"])
 
 
 		# Hatch panel medio; garra y piston
 
-		if state["posicion"] == 2 and state["mecanismo"] == 1:
+		if state["posicion"] == "media" and state["mecanismo"] == "piston":
 			state["timer_lift_middle"] += 1
 			if state["timer_lift_middle"] < 100:
 				print ("en posicion media")
 			elif state["timer_lift_middle"] < 200:
+				print ("piston_acitvated")
 				state["piston_activated"] = False
+			elif state["timer_lift_middle"] < 300:
+				print ("en posicion inicial")
 			else:
+				state["posicion"] = "neutral"
+				state["mecanismo"] = "neutral"
 				state["timer_lift_middle"] = 0
 
-		elif state["posicion"] == 2 and state["mecanismo"] == 2:
+
+
+		if state["posicion"] == "media" and state["mecanismo"] == "garra":
 			state["timer_lift_middle"] += 1
 			if state["timer_lift_middle"] < 100:
 				print ("en posicion media")
 			elif state["timer_lift_middle"] < 200:
 				state["claw_activated"] = 2
+				print ("claw_activated")
+			elif state["timer_lift_taller"] < 300:
+				print ("en posicion inicial")
 			else:
+				state["posicion"] = "neutral"
+				state["mecanismo"] = "neutral"
 				state["timer_lift_middle"] = 0
+
+
 
 
 		# Hatch panel alto; garra y piston
 
 
-		if state["posicion"] == 3 and state["mecanismo"] == 1:
+		if state["posicion"] == "alta" and state["mecanismo"] == "piston":
 			state["timer_lift_taller"] += 1
 			if state["timer_lift_taller"] < 100:
 				print ("en posicion alta")
 			elif state["timer_lift_taller"] < 200:
+				print ("piston_acitvated")
 				state["piston_activated"] = False
+			elif state["timer_lift_taller"] < 300:
+				print ("en posicion inicial")
 			else:
+				state["posicion"] = "neutral"
+				state["mecanismo"] = "neutral"
 				state["timer_lift_taller"] = 0
 
-		elif state["posicion"] == 3 and state["mecanismo"] == 2:
+
+
+		if state["posicion"] == "alta" and state["mecanismo"] == "garra":
 			state["timer_lift_taller"] += 1
 			if state["timer_lift_taller"] < 100:
 				print ("en posicion alta")
 			elif state["timer_lift_taller"] < 200:
 				state["claw_activated"] = 2
+				print ("claw_activated")
+			elif state["timer_lift_taller"] < 300:
+				print ("en posicion inicial")
 			else:
+				state["posicion"] = "neutral"
+				state["mecanismo"] = "neutral"
 				state["timer_lift_taller"] = 0
+
+
 
 
 		# Piston
@@ -214,24 +225,12 @@ class MyRobot(wpilib.TimedRobot):
 		self.piston.set(state["piston_activated"])
 		
 
-		if state["Compressor_activated"]:
+		if self.PSV < 120:
 			self.Compressor.start()
 		else:
 			self.Compressor.stop()
 
 
-        # Encoders
-
-
-		if state["encoder"]:
-			if self.encoder.get() > -5000:
-				self.motor1.set(0)
-			else:
-				self.motor1.set(1)
-				wpilib.DriverStation.reportWarning(str(self.encoder.get()), False)
-		else:
-			self.motor1.set(0)
-			self.encoder.reset()
 
 
 #funcion para correr el código del robot utlizando

@@ -52,59 +52,65 @@ def read_chasis_inputs(puerto_del_control):
 
 def read_abilities_inputs(puerto_del_control):
 
-	# botones del elevador con pistones
+	# botones del elevador 
 
 	abilities_controller = wpilib.Joystick(puerto_del_control)
 
-	button_12 = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_abajo1)
-	button_10 = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_medio1)
-	button_8 = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_alto1)
+	button_lift_up = abilities_controller.getRawButton(Controller_inputs.subir_manualmente)
+	button_lift_down = abilities_controller.getRawButton(Controller_inputs.bajar_manualmente)
+	eje_t = abilities_controller.getZ()
+	eje_z =abilities_controller.getThrottle()
+
+
+	if button_lift_up and state["Controller"] == "PacificRim" or state["Controller"] == "ControlPico" and eje_t > 0:
+		state["lift_motor"] = -0.6
+		state["claw_motor"] = -0.6
+
+	elif button_lift_down and state["Controller"] == "PacificRim" or state["Controller"] == "ControlPico" and eje_z > 0:
+		state["lift_motor"] = 0.3
+		state["claw_motor"] = 0.3
+
+	else:
+		state["claw_motor"] = 0
+		state["lift_motor"] = 0
+
+	button_medio_piston = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_medio_piston)
+	button_alto_piston = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_alto_piston)
+
 
 	# botones del elevador con garra
 
-	button_11 = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_abajo2)
-	button_9 = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_medio2)
-	button_7 = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_alto2)
+	button_medio_garra = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_medio_garra)
+	button_alto_garra = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_alto_garra)
 
 	# funciones para el uso del elevador
 
-	if button_12:
-		state["posicion"] = 1
-		state["mecanismo"] = 1
 
-	elif button_10:
+	if button_medio_piston:
 
-		state["posicion"] = 2
-		state["mecanismo"] = 1
+		state["posicion"] = "media"
+		state["mecanismo"] = "piston"
 
-	elif button_8:
+	elif button_alto_piston:
 
-		state["posicion"] = 3
-		state["mecanismo"] = 1
+		state["posicion"] = "alta"
+		state["mecanismo"] = "piston"
 
 
-	elif button_11:
+	elif button_medio_garra:
 
-		state["posicion"] = 1
-		state["mecanismo"] = 2
-
-
-	elif button_9:
-
-		state["posicion"] = 2
-		state["mecanismo"] = 2
+		state["posicion"] = "media"
+		state["mecanismo"] = "garra"
 
 
-	elif button_7:
+	elif button_alto_garra:
 
-		state["posicion"] = 3
-		state["mecanismo"] = 2
+		state["posicion"] = "alta"
+		state["mecanismo"] = "garra"
 
 
 	#Inputs de Solenoides, pistones y compresoras
-	
-	Compressor_button = abilities_controller.getRawButton(7)
-	state["Compressor_activated"] = Compressor_button
+
 
 	turn_double_piston_on = abilities_controller.getRawButton(Controller_inputs.prender_garra)  
 	turn_double_piston_off = abilities_controller.getRawButton(Controller_inputs.apagar_garra)
