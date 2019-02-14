@@ -75,15 +75,14 @@ def read_abilities_inputs(puerto_del_control):
 
 	if button_lift_up and state["Controller"] == "PacificRim" or state["Controller"] == "ControlPico" and eje_t > 0:
 		state["lift_motor"] = -0.6
-		state["claw_motor"] = -0.6
 
 	elif button_lift_down and state["Controller"] == "PacificRim" or state["Controller"] == "ControlPico" and eje_z > 0:
 		state["lift_motor"] = 0.3
-		state["claw_motor"] = 0.3
 
 	else:
-		state["claw_motor"] = 0
 		state["lift_motor"] = 0
+
+
 
 
 
@@ -113,8 +112,8 @@ def read_abilities_inputs(puerto_del_control):
 	#Inputs de Solenoides, pistones y compresoras
 
 
-	turn_double_piston_on = abilities_controller.getRawButton(Controller_inputs.prender_garra)  
-	turn_double_piston_off = abilities_controller.getRawButton(Controller_inputs.apagar_garra)
+	succionar_garra = abilities_controller.getRawButton(Controller_inputs.prender_garra)  
+	aventar_garra = abilities_controller.getRawButton(Controller_inputs.apagar_garra)
 	turn_piston_on = abilities_controller.getRawButton(Controller_inputs.prender_piston)
 	turn_piston_off = abilities_controller.getRawButton(Controller_inputs.apagar_piston)
 
@@ -128,11 +127,16 @@ def read_abilities_inputs(puerto_del_control):
 	if  turn_piston_off or state["piston_activated"] == False:
 			state["piston_activated"] = False
 
-	if turn_double_piston_on or state["claw_activated"] == 1:
-		state["claw_activated"] = 1
 
-	if  turn_double_piston_off or state["claw_activated"] == 2:
-			state["claw_activated"] = 2
+
+	if succionar_garra:
+		state["claw_motor"] = -0.4
+
+	elif aventar_garra:
+		state["claw_motor"] = 0.4
+
+	else:
+		state["claw_motor"] = 0
 
 
 	#Encoders

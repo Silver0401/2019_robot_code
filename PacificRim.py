@@ -1,7 +1,6 @@
 prender_piston = 3
 apagar_piston = 5 
 
-
 prender_garra = 4
 apagar_garra = 6
 

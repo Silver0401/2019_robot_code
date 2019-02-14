@@ -15,16 +15,16 @@ state = {
 	"mov_y": 0,
 	"mov_z": 0,
 
-#Variables del Piston
+#Variables del Piston y garra
 	
 	"piston_activated": False,
-	"claw_activated": 2,
 	"timer_piston":0,
+	"claw_motor": 0,
+
 
 # Variables del Elevador
 
 	"lift_motor": 0,
-	"claw_motor": 0,
 	"timer_lift_middle": 0,
 	"timer_lift_taller": 0,
 	"posicion" : "neutral",

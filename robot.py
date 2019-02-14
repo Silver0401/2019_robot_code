@@ -26,8 +26,7 @@ class MyRobot(wpilib.TimedRobot):
 
 		# Encoders
 		
-		self.ir = wpilib.DigitalInput(9)
-		self.encoder = wpilib.Encoder(3,4, True, 2)
+		x = "missing"
 
 		# Contador y Control
 
@@ -44,7 +43,10 @@ class MyRobot(wpilib.TimedRobot):
 		#lift and claw motors
 
 		self.lift_motor = wpilib.Talon(4)
-		self.claw_motor = wpilib.Talon(5)
+		self.lift_motor_2 = wpilib.Talon(5)
+
+		self.claw_motor = wpilib.Talon(6)
+		self.claw_motor_2 = wpilib.Talon(7)
 
 		#sensores
 
@@ -144,8 +146,11 @@ class MyRobot(wpilib.TimedRobot):
 
 		# Configuracion para el elevedaor tanto automáticamente como manual
 		
-		self.lift_motor.set(state["claw_motor"])
-		self.claw_motor.set(state["lift_motor"])
+		self.lift_motor.set(state["lift_motor"])
+		self.lift_motor_2.set(state["lift_motor"])
+
+		self.claw_motor.set(state["claw_motor"])
+		self.claw_motor_2.set(state["claw_motor"])
 
 
 		# Hatch panel medio; garra y piston
@@ -169,8 +174,8 @@ class MyRobot(wpilib.TimedRobot):
 			if state["timer_lift_middle"] < 100:
 				print ("en posicion media")
 			elif state["timer_lift_middle"] < 200:
-				state["claw_activated"] = 2
-				print ("claw_activated")
+				state["claw_motor"] = 0.3
+				print ("claw_motor")
 			elif state["timer_lift_taller"] < 300:
 				print ("en posicion inicial")
 			else:
@@ -199,8 +204,8 @@ class MyRobot(wpilib.TimedRobot):
 			if state["timer_lift_taller"] < 100:
 				print ("en posicion alta")
 			elif state["timer_lift_taller"] < 200:
-				state["claw_activated"] = 2
-				print ("claw_activated")
+				state["claw_motor"] = 0.3
+				print ("claw_motor")
 			elif state["timer_lift_taller"] < 300:
 				print ("en posicion inicial")
 			else:
@@ -212,7 +217,6 @@ class MyRobot(wpilib.TimedRobot):
 
 		# Piston
 
-		self.double_piston.set(state["claw_activated"])
 
 		self.piston.set(state["piston_activated"])
 		
