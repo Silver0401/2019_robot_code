@@ -165,8 +165,6 @@ class MyRobot(wpilib.TimedRobot):
 			elif state["timer_lift_middle"] < 300:
 				print ("en posicion inicial")
 			else:
-				state["posicion"] = "neutral"
-				state["mecanismo"] = "neutral"
 				state["timer_lift_middle"] = 0
 
 		if state["posicion"] == "media" and state["mecanismo"] == "garra":
@@ -179,8 +177,6 @@ class MyRobot(wpilib.TimedRobot):
 			elif state["timer_lift_taller"] < 300:
 				print ("en posicion inicial")
 			else:
-				state["posicion"] = "neutral"
-				state["mecanismo"] = "neutral"
 				state["timer_lift_middle"] = 0
 
 		# Hatch panel alto; garra y piston
@@ -195,8 +191,6 @@ class MyRobot(wpilib.TimedRobot):
 			elif state["timer_lift_taller"] < 300:
 				print ("en posicion inicial")
 			else:
-				state["posicion"] = "neutral"
-				state["mecanismo"] = "neutral"
 				state["timer_lift_taller"] = 0
 
 		if state["posicion"] == "alta" and state["mecanismo"] == "garra":
@@ -209,13 +203,11 @@ class MyRobot(wpilib.TimedRobot):
 			elif state["timer_lift_taller"] < 300:
 				print ("en posicion inicial")
 			else:
-				state["posicion"] = "neutral"
-				state["mecanismo"] = "neutral"
 				state["timer_lift_taller"] = 0
 
 
 
-		# Piston
+		# Pistons and Compressor
 
 
 		self.piston.set(state["piston_activated"])
