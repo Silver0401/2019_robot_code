@@ -144,14 +144,7 @@ class MyRobot(wpilib.TimedRobot):
 			self.drive.driveCartesian(powerX * 0.6,-powerY * 0.6, powerZ * 0.5, 0)
 
 
-		# Configuracion para el elevedaor tanto automáticamente como manual
-		
-		self.lift_motor.set(state["lift_motor"])
-		self.lift_motor_2.set(state["lift_motor"])
-
-		self.claw_motor.set(state["claw_motor"])
-		self.claw_motor_2.set(state["claw_motor"])
-
+		# Configuracion para el elevador automaticamente
 
 		# Hatch panel medio; garra y piston
 
@@ -166,6 +159,8 @@ class MyRobot(wpilib.TimedRobot):
 				print ("en posicion inicial")
 			else:
 				state["timer_lift_middle"] = 0
+				state["posicion"] = "neutral"
+				state["posicion"] = "neutral"
 
 		if state["posicion"] == "media" and state["mecanismo"] == "garra":
 			state["timer_lift_middle"] += 1
@@ -178,6 +173,8 @@ class MyRobot(wpilib.TimedRobot):
 				print ("en posicion inicial")
 			else:
 				state["timer_lift_middle"] = 0
+				state["posicion"] = "neutral"
+				state["posicion"] = "neutral"
 
 		# Hatch panel alto; garra y piston
 
@@ -192,6 +189,8 @@ class MyRobot(wpilib.TimedRobot):
 				print ("en posicion inicial")
 			else:
 				state["timer_lift_taller"] = 0
+				state["posicion"] = "neutral"
+				state["mecanismo"] = "neutral"
 
 		if state["posicion"] == "alta" and state["mecanismo"] == "garra":
 			state["timer_lift_taller"] += 1
@@ -204,6 +203,17 @@ class MyRobot(wpilib.TimedRobot):
 				print ("en posicion inicial")
 			else:
 				state["timer_lift_taller"] = 0
+				state["posicion"] = "neutral"
+				state["posicion"] = "neutral"
+
+		# Configuracion para mover el elevador y la garra manualmente 
+
+
+		self.lift_motor.set(state["lift_motor"])
+		self.lift_motor_2.set(state["lift_motor"])
+
+		self.claw_motor.set(state["claw_motor"])
+		self.claw_motor_2.set(state["claw_motor"])
 
 
 
