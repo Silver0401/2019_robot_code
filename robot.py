@@ -22,7 +22,7 @@ class MyRobot(wpilib.TimedRobot):
 		self.Compressor = wpilib.Compressor(0)
 		self.PSV = self.Compressor.getPressureSwitchValue()
 		self.double_piston = wpilib.DoubleSolenoid(0,0,1)
-		self.piston = wpilib.Solenoid(0,7)
+		self.piston = wpilib.Solenoid(0,2)
 
 		# Encoders
 		
@@ -111,9 +111,12 @@ class MyRobot(wpilib.TimedRobot):
 										
 	def teleopPeriodic(self):
 
+
+
 		#se leen constantemente los botones,joysticks y cambia de modalidades de controles
 		
 		oi.read_control_inputs(state["Controller"])
+
 
 		# Movimiento manual de las mecanum, align y turbo
 
@@ -121,9 +124,9 @@ class MyRobot(wpilib.TimedRobot):
 		y = state["mov_y"] 
 		z = state["mov_z"] 
 
-		powerX = 0 if x < 0.15 and x > -0.15 else x
-		powerY = 0 if y < 0.15 and y > -0.15 else y
-		powerZ = 0 if z < 0.15 and z > -0.15 else z
+		powerX = 0 if x < 0.25 and x > -0.25 else x
+		powerY = 0 if y < 0.25 and y > -0.25 else y
+		powerZ = 0 if z < 0.25 and z > -0.25 else z
 	
 
 		if state["align_activated"]:
@@ -220,13 +223,16 @@ class MyRobot(wpilib.TimedRobot):
 		# Pistons and Compressor
 
 
-		self.piston.set(state["piston_activated"])
-		
 
-		if self.PSV < 120:
-			self.Compressor.start()
-		else:
-			self.Compressor.stop()
+		# self.piston.set(state["piston_activated"])
+		self.double_piston.set(state["piston_activated"])
+
+		self.Compressor.stop()
+
+		# if self.PSV < 120:
+		# 	self.Compressor.start()
+		# else:
+		# 	self.Compressor.stop()
 
 
 

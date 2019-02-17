@@ -74,11 +74,10 @@ def read_abilities_inputs(puerto_del_control):
 
 
 	if button_lift_up and state["Controller"] == "PacificRim" or state["Controller"] == "ControlPico" and eje_t > 0:
-		state["lift_motor"] = -0.6
+		state["lift_motor"] = -1
 
 	elif button_lift_down and state["Controller"] == "PacificRim" or state["Controller"] == "ControlPico" and eje_z > 0:
-		state["lift_motor"] = 0.3
-
+		state["lift_motor"] = 1
 	else:
 		state["lift_motor"] = 0
 
@@ -121,14 +120,14 @@ def read_abilities_inputs(puerto_del_control):
 	#Configuracion para el uso de pistones
 
 
-	if turn_piston_on or state["piston_activated"] == True:
-		state["piston_activated"] = True
+	if turn_piston_on or state["piston_activated"] == 1:
+		state["piston_activated"] = 1
 
-	if  turn_piston_off or state["piston_activated"] == False:
-			state["piston_activated"] = False
+	if  turn_piston_off or state["piston_activated"] == 2:
+		state["piston_activated"] = 2
+			
 
-
-
+		
 	if succionar_garra:
 		state["claw_motor"] = -0.4
 
