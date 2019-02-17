@@ -14,6 +14,6 @@ subir_plataforma_medio_garra = 7 #back_button
 subir_plataforma_alto_garra = 5 # LB_button
 
 
-turbo = 5
-acomodarse = 6
+turbo = 10
+acomodarse = 9
 

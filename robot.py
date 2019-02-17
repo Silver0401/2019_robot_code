@@ -21,8 +21,8 @@ class MyRobot(wpilib.TimedRobot):
 		
 		self.Compressor = wpilib.Compressor(0)
 		self.PSV = self.Compressor.getPressureSwitchValue()
-		self.double_piston = wpilib.DoubleSolenoid(0,0,1)
-		self.piston = wpilib.Solenoid(0,2)
+		self.double_piston = wpilib.DoubleSolenoid(0,1,2)
+		self.piston = wpilib.Solenoid(0,0)
 
 		# Encoders
 		
@@ -225,14 +225,15 @@ class MyRobot(wpilib.TimedRobot):
 
 
 		# self.piston.set(state["piston_activated"])
-		self.double_piston.set(state["piston_activated"])
+		self.piston.set(state["piston_activated"])
 
-		self.Compressor.stop()
 
-		# if self.PSV < 120:
-		# 	self.Compressor.start()
-		# else:
-		# 	self.Compressor.stop()
+		# wpilib.DriverStation.reportWarning(str(self.PSV),True)
+
+		if self.PSV < 50:
+			self.Compressor.start()
+		else:
+			self.Compressor.stop()
 
 
 
