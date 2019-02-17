@@ -17,7 +17,7 @@ state = {
 
 #Variables del Piston y garra
 	
-	"piston_activated": True,
+	"piston_activated": False,
 	"timer_piston":0,
 	"claw_motor": 0,
 

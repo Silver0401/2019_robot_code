@@ -46,7 +46,7 @@ class MyRobot(wpilib.TimedRobot):
 		self.lift_motor_2 = wpilib.Talon(5)
 
 		self.claw_motor = wpilib.Talon(6)
-		self.claw_motor_2 = wpilib.Talon(7)
+		
 
 		#sensores
 
@@ -216,7 +216,7 @@ class MyRobot(wpilib.TimedRobot):
 		self.lift_motor_2.set(state["lift_motor"])
 
 		self.claw_motor.set(state["claw_motor"])
-		self.claw_motor_2.set(state["claw_motor"])
+	
 
 
 
@@ -228,12 +228,12 @@ class MyRobot(wpilib.TimedRobot):
 		self.piston.set(state["piston_activated"])
 
 
-		# wpilib.DriverStation.reportWarning(str(self.PSV),True)
+		# wpilib.DriverStation.reportWarning(self.PSV,True)
 
-		if self.PSV < 50:
-			self.Compressor.start()
-		else:
+		if self.PSV:
 			self.Compressor.stop()
+		else:
+			self.Compressor.start()
 
 
 

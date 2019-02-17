@@ -74,10 +74,10 @@ def read_abilities_inputs(puerto_del_control):
 
 
 	if button_lift_up and state["Controller"] == "PacificRim" or state["Controller"] == "ControlPico" and eje_t > 0:
-		state["lift_motor"] = -1
+		state["lift_motor"] = 1
 
 	elif button_lift_down and state["Controller"] == "PacificRim" or state["Controller"] == "ControlPico" and eje_z > 0:
-		state["lift_motor"] = 1
+		state["lift_motor"] = -1
 	else:
 		state["lift_motor"] = 0
 
