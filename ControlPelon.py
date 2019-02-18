@@ -18,3 +18,6 @@ subir_plataforma_alto_garra = 7
 turbo = 2
 acomodarse = 1
 
+
+subir_plataforma_bajo_piston = 16
+subir_plataforma_bajo_garra = 17

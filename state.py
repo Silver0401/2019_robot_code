@@ -25,9 +25,11 @@ state = {
 # Variables del Elevador
 
 	"lift_motor": 0,
+	"timer_lift_low": 0,
 	"timer_lift_middle": 0,
 	"timer_lift_taller": 0,
 	"posicion" : "neutral",
-	"mecanismo": "neutral"
+	"mecanismo": "neutral",
+	"setpoint" : 0
 
 }
