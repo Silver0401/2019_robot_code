@@ -20,6 +20,10 @@ state = {
 	"piston_activated": False,
 	"timer_piston":0,
 	"claw_motor": 0,
+	"wheeler_motor": 0,
+	"timer_garra":0,
+	"posicion_garra": "arriba",
+	
 
 
 # Variables del Elevador

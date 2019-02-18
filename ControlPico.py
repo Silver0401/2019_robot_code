@@ -1,8 +1,8 @@
-prender_piston = 2 # boton B
-apagar_piston = 1 #boton A
+prender_y_apagar_piston = 2 # boton B
+prender_garra = 1 # boton A
 
-prender_garra = 4 # boton Y
-apagar_garra = 3 # boton X
+succionar_wheelers = 4 # boton 
+aventar_wheelers = 3 # boton X
 
 subir_manualmente= 14 # Eje z / gatillo RT
 bajar_manualmente = 15 # Eje t / gatillo LT

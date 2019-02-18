@@ -57,7 +57,7 @@ def read_abilities_inputs(puerto_del_control):
 
 	abilities_controller = wpilib.Joystick(puerto_del_control)
 
-	# botones del elevador 
+	# botones del elevador y predeterminados
 
 	button_lift_up = abilities_controller.getRawButton(Controller_inputs.subir_manualmente)
 	button_lift_down = abilities_controller.getRawButton(Controller_inputs.bajar_manualmente)
@@ -81,8 +81,7 @@ def read_abilities_inputs(puerto_del_control):
 	else:
 		state["lift_motor"] = 0
 
-
-
+	
 	if button_medio_piston:
 
 		state["posicion"] = "media"
@@ -106,19 +105,17 @@ def read_abilities_inputs(puerto_del_control):
 		state["mecanismo"] = "garra"
 
 
-	#Inputs de Solenoides, pistones y compresoras
+	#Inputs de Solenoides, pistones, wheelers y subir o bajar garra
 
 
-	succionar_garra = abilities_controller.getRawButton(Controller_inputs.prender_garra)  
-	aventar_garra = abilities_controller.getRawButton(Controller_inputs.apagar_garra)
-	turn_piston_on = abilities_controller.getRawButton(Controller_inputs.prender_piston)
-	turn_piston_off = abilities_controller.getRawButton(Controller_inputs.apagar_piston)
-
-
+	succionar_wheelers = abilities_controller.getRawButton(Controller_inputs.succionar_wheelers)  
+	aventar_wheelers = abilities_controller.getRawButton(Controller_inputs.aventar_wheelers)
+	subir_bajar_garra = abilities_controller.getRawButton(Controller_inputs.prender_garra)
+	turn_piston_on = abilities_controller.getRawButton(Controller_inputs.prender_y_apagar_piston)
+	
 	#Configuracion para el uso de pistones
 
-
-	if turn_piston_on:
+	if turn_piston_on or state["timer_piston"] != 0:
 		state["timer_piston"] += 1
 		if state["timer_piston"] < 35: 
 			state["piston_activated"] = True
@@ -128,21 +125,40 @@ def read_abilities_inputs(puerto_del_control):
 			state["timer_piston"] = 0
 
 
-
-			
-
+	#Configuracion de los wheelers
 		
-	if succionar_garra:
-		state["claw_motor"] = -0.4
+	if succionar_wheelers:
+		state["wheeler_motor"] = -0.4
 
-	elif aventar_garra:
-		state["claw_motor"] = 0.4
+	elif aventar_wheelers:
+		state["wheeler_motor"] = 0.4
 
 	else:
+		state["wheeler_motor"] = 0
+
+
+	#Configuracion garra
+
+	if subir_bajar_garra or state["timer_garra"] != 0:
+		state["timer_garra"] += 1
+		if state["posicion_garra"] == "abajo":
+			if state["timer_garra"] < 100: 
+				state["claw_motor"] = 0.05
+			else:
+				state["timer_garra"] = 0
+				state["posicion_garra"] = "arriba"
+		elif state["posicion_garra"] == "arriba":	
+			if state["timer_garra"] < 100: 
+				state["claw_motor"] = -0.05
+			else:
+				state["timer_garra"] = 0
+				state["posicion_garra"] = "abajo"
+	else:
 		state["claw_motor"] = 0
+	
 
 
-
+		
 
 
 

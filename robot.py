@@ -50,7 +50,9 @@ class MyRobot(wpilib.TimedRobot):
 
 		self.lift_motor = wpilib.Talon(4)
 		self.lift_motor_2 = wpilib.Talon(5)
+
 		self.claw_motor = wpilib.Talon(6)
+		self.wheeler_motor = wpilib.Talon(7)
 
 		#sensores
 
@@ -160,8 +162,8 @@ class MyRobot(wpilib.TimedRobot):
 
 		if state["posicion"] == "media" and state["mecanismo"] == "piston":
 
-			state["setpoint"] = 7839
-			wpilib.DriverStation.reportWarning(str(self.PID()), False)
+			state["setpoint"] = 3300
+
 
 			if self.rcw >= 136427.48:
 				state["lift_motor"] = 0.8
@@ -243,8 +245,8 @@ class MyRobot(wpilib.TimedRobot):
 					self.lift_motor.set(0.0)
 					self.lift_motor_2.set(0.0)
 			elif state["timer_lift_middle"] < 200:
-				state["claw_motor"] = 0.3
-				print ("claw_motor")
+				state["wheeler_motor"] = 0.3
+				print ("wheeler_motor")
 			elif state["timer_lift_middle"] < 300:
 				state["setpoint"] = -3300
 				if self.rcw >= 136427.48:
@@ -350,8 +352,8 @@ class MyRobot(wpilib.TimedRobot):
 					self.lift_motor.set(0.0)
 					self.lift_motor_2.set(0.0)
 			elif state["timer_lift_taller"] < 200:
-				state["claw_motor"] = 0.3
-				print ("claw_motor")
+				state["wheeler_motor"] = 0.3
+				print ("wheeler_motor")
 			elif state["timer_lift_taller"] < 300:
 				state["setpoint"] = -5200
 				if self.rcw >= 136427.48:
@@ -382,6 +384,8 @@ class MyRobot(wpilib.TimedRobot):
 
 		self.lift_motor.set(state["lift_motor"])
 		self.lift_motor_2.set(state["lift_motor"])
+
+		self.wheeler_motor.set(state["wheeler_motor"])
 		self.claw_motor.set(state["claw_motor"])
 	
 
@@ -396,13 +400,14 @@ class MyRobot(wpilib.TimedRobot):
 			self.Compressor.start()
 
 
+
 	def PID (self):
 
 		error = state["setpoint"] - self.encoder.get()
 		self.integral = self.integral + (error*.02)
 		derivative = (error - self.previous_error) / .02
 		self.rcw = self.P*error + self.I*self.integral + self.D*derivative
-		print (self.rcw)
+		# print (self.rcw)
 
 		
 
