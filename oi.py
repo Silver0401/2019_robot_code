@@ -143,13 +143,13 @@ def read_abilities_inputs(puerto_del_control):
 		state["timer_garra"] += 1
 		if state["posicion_garra"] == "abajo":
 			if state["timer_garra"] < 100: 
-				state["claw_motor"] = 0.05
+				state["claw_motor"] = 0.5
 			else:
 				state["timer_garra"] = 0
 				state["posicion_garra"] = "arriba"
 		elif state["posicion_garra"] == "arriba":	
 			if state["timer_garra"] < 100: 
-				state["claw_motor"] = -0.05
+				state["claw_motor"] = -0.5
 			else:
 				state["timer_garra"] = 0
 				state["posicion_garra"] = "abajo"

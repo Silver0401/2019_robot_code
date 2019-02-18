@@ -161,112 +161,28 @@ class MyRobot(wpilib.TimedRobot):
 		
 
 		if state["posicion"] == "media" and state["mecanismo"] == "piston":
-
-			state["setpoint"] = 3300
-
-
-			if self.rcw >= 136427.48:
-				state["lift_motor"] = 0.8
-			if self.rcw <= 136427.48 and self.rcw >= 116019.48:
-				state["lift_motor"] = 0.75
-			elif self.rcw <= 116019.48 and self.rcw >= 68213.74:	
-				state["lift_motor"] = 0.7
-			elif self.rcw <= 68213.74 and self.rcw >= 34387.48:	
-				state["lift_motor"] = 0.65
-			elif self.rcw <= 34387.48 and self.rcw >= 102.00:
-				state["lift_motor"] = 0.6
-			elif self.rcw <= 102.00:
-				state["lift_motor"] = 0.0
+			state["timer_lift_middle"] += 1
+			if state["timer_lift_middle"] < 150:
+				state["lift_motor"] = 1
+			elif state["timer_lift_middle"] < 185:
+				state["piston_activated"] = True
+			elif state["timer_lift_middle"] < 200:
+				state["piston_activated"] = False
+			elif state["timer_lift_middle"] < 350:
+				state["lift_motor"] = -1
 			else:
-				self.encoder.reset()
-				state["lift_motor"] = 0
-			# ststate["lift_motor"] =  += 1			# if state["timer_lift_middle"] < 500:
-			# 	print ("haciendo encoder")
-			# 	state["setpoint"] = 3300
-			# 	if self.rcw >= 136427.48:
-			# 		state["lift_motor"] = -0.8
-			# 	if self.rcw <= 136427.48 and self.rcw >= 116019.48:
-			# 		state["lift_motor"] = -0.75
-			# 	elif self.rcw <= 116019.48 and self.rcw >= 68213.74:
-			# 		state["lift_motor"] = -0.7
-			# 	elif self.rcw <= 68213.74 and self.rcw >= 34387.48:
-			# 		state["lift_motor"] = -0.65
-			# 	elif self.rcw <= 34387.48 and self.rcw >= 102.00:
-			# 		state["lift_motor"] = -0.6
-			# 	elif self.rcw <= 102.00:
-			# 		state["lift_motor"] = 0.0
-			# elif state["timer_lift_middle"] < 335:
-			# 	state["piston_activated"] = True
-			# 	print ("piston activated")
-			# elif state["timer_lift_middle"] < 360:
-			# 	print ("piston retracted")
-			# 	state["piston_activated"] = False
-			# elif state["timer_lift_middle"] < 660:
-			# 	print ("encoder retracted")
-			# 	state["setpoint"] = -3300
-			# 	if self.rcw >= -136427.48:
-			# 		state["lift_motor"] = 0.8
-			# 	if self.rcw >= -136427.48 and self.rcw <= -116019.48:
-			# 		state["lift_motor"] = 0.75
-			# 	elif self.rcw >= -116019.48 and self.rcw <= -68213.74:
-			# 		state["lift_motor"] = 0.7
-			# 	elif self.rcw >= -68213.74 and self.rcw <= -34387.48:
-			# 		state["lift_motor"] = 0.65
-			# 	elif self.rcw >= -34387.48 and self.rcw <= -102.00:
-			# 		state["lift_motor"] = 0.6
-			# 	elif self.rcw >= -102.00:
-			# 		state["lift_motor"] = 0.0
-			# else:
-			# 	state["timer_lift_middle"] = 0
-			# 	self.encoder.reset()
-			# 	state["posicion"] = "neutral"
-			# 	state["mecanismo"] = "neutral"
+				state["timer_lift_middle"] = 0
+				state["posicion"] = "neutral"
+				state["mecanismo"] = "neutral"
 
 		if state["posicion"] == "media" and state["mecanismo"] == "garra":
 			state["timer_lift_middle"] += 1
-			if state["timer_lift_middle"] < 100:
-				state["setpoint"] = 3300
-				if self.rcw >= 136427.48:
-					self.lift_motor.set(0.8)
-					self.lift_motor_2.set(0.8)
-				if self.rcw <= 136427.48 and self.rcw >= 116019.48:
-					self.lift_motor.set(0.75)
-					self.lift_motor_2.set(0.75)
-				elif self.rcw <= 116019.48 and self.rcw >= 68213.74:
-					self.lift_motor.set(0.7)
-					self.lift_motor_2.set(0.7)
-				elif self.rcw <= 68213.74 and self.rcw >= 34387.48:
-					self.lift_motor.set(0.65)
-					self.lift_motor_2.set(0.65)
-				elif self.rcw <= 34387.48 and self.rcw >= 102.00:
-					self.lift_motor.set(0.6)
-					self.lift_motor_2.set(0.6)
-				elif self.rcw <= 102.00:
-					self.lift_motor.set(0.0)
-					self.lift_motor_2.set(0.0)
-			elif state["timer_lift_middle"] < 200:
-				state["wheeler_motor"] = 0.3
-				print ("wheeler_motor")
-			elif state["timer_lift_middle"] < 300:
-				state["setpoint"] = -3300
-				if self.rcw >= 136427.48:
-					self.lift_motor.set(-0.8)
-					self.lift_motor_2.set(-0.8)
-				if self.rcw <= 136427.48 and self.rcw >= 116019.48:
-					self.lift_motor.set(-0.75)
-					self.lift_motor_2.set(-0.75)
-				elif self.rcw <= 116019.48 and self.rcw >= 68213.74:
-					self.lift_motor.set(-0.7)
-					self.lift_motor_2.set(-0.7)
-				elif self.rcw <= 68213.74 and self.rcw >= 34387.48:
-					self.lift_motor.set(-0.65)
-					self.lift_motor_2.set(-0.65)
-				elif self.rcw <= 34387.48 and self.rcw >= 102.00:
-					self.lift_motor.set(-0.6)
-					self.lift_motor_2.set(-0.6)
-				elif self.rcw <= 102.00:
-					self.lift_motor.set(0.0)
-					self.lift_motor_2.set(0.0)
+			if state["timer_lift_middle"] < 150:
+				state["lift_motor"] = 1
+			elif state["timer_lift_middle"] < 185:
+				state["wheeler_motor"] = 1
+			elif state["timer_lift_middle"] < 335:
+				state["lift_motor"] = -1
 			else:
 				state["timer_lift_middle"] = 0
 				state["posicion"] = "neutral"
@@ -276,54 +192,14 @@ class MyRobot(wpilib.TimedRobot):
 
 		if state["posicion"] == "alta" and state["mecanismo"] == "piston":
 			state["timer_lift_taller"] += 1
-			if state["timer_lift_taller"] < 100:
-				print (" sube el encoder ")
-				state["setpoint"] = 5200
-				if self.rcw >= 136427.48:
-					self.lift_motor.set(0.8)
-					self.lift_motor_2.set(0.8)
-				if self.rcw <= 136427.48 and self.rcw >= 116019.48:
-					self.lift_motor.set(0.75)
-					self.lift_motor_2.set(0.75)
-				elif self.rcw <= 116019.48 and self.rcw >= 68213.74:
-					self.lift_motor.set(0.7)
-					self.lift_motor_2.set(0.7)
-				elif self.rcw <= 68213.74 and self.rcw >= 34387.48:
-					self.lift_motor.set(0.65)
-					self.lift_motor_2.set(0.65)
-				elif self.rcw <= 34387.48 and self.rcw >= 102.00:
-					self.lift_motor.set(0.6)
-					self.lift_motor_2.set(0.6)
-				elif self.rcw <= 102.00:
-					self.lift_motor.set(0.0)
-					self.lift_motor_2.set(0.0)
-			elif state["timer_lift_taller"] < 135:
-				print (" activa el piston ")
+			if state["timer_lift_taller"] < 200:
+				state["lift_motor"] = 1
+			elif state["timer_lift_taller"] < 235:
 				state["piston_activated"] = True
-			elif state["timer_lift_taller"] < 160:
-				print ("regresa el piston ")
+			elif state["timer_lift_taller"] < 270:
 				state["piston_activated"] = False
-			elif state["timer_lift_taller"] < 260:
-				print ("encoder de regreso ")
-				state["setpoint"] = -5200
-				if self.rcw >= 136427.48:
-					self.lift_motor.set(-0.8)
-					self.lift_motor_2.set(-0.8)
-				if self.rcw <= 136427.48 and self.rcw >= 116019.48:
-					self.lift_motor.set(-0.75)
-					self.lift_motor_2.set(-0.75)
-				elif self.rcw <= 116019.48 and self.rcw >= 68213.74:
-					self.lift_motor.set(-0.7)
-					self.lift_motor_2.set(-0.7)
-				elif self.rcw <= 68213.74 and self.rcw >= 34387.48:
-					self.lift_motor.set(-0.65)
-					self.lift_motor_2.set(-0.65)
-				elif self.rcw <= 34387.48 and self.rcw >= 102.00:
-					self.lift_motor.set(-0.6)
-					self.lift_motor_2.set(-0.6)
-				elif self.rcw <= 102.00:
-					self.lift_motor.set(0.0)
-					self.lift_motor_2.set(0.0)
+			elif state["timer_lift_taller"] < 470:
+				state["lift_motor"] = -1
 			else:
 				state["timer_lift_taller"] = 0
 				state["posicion"] = "neutral"
@@ -331,49 +207,12 @@ class MyRobot(wpilib.TimedRobot):
 
 		if state["posicion"] == "alta" and state["mecanismo"] == "garra":
 			state["timer_lift_taller"] += 1
-			if state["timer_lift_taller"] < 100:
-				state["setpoint"] = 5200
-				if self.rcw >= 136427.48:
-					self.lift_motor.set(0.8)
-					self.lift_motor_2.set(0.8)
-				if self.rcw <= 136427.48 and self.rcw >= 116019.48:
-					self.lift_motor.set(0.75)
-					self.lift_motor_2.set(0.75)
-				elif self.rcw <= 116019.48 and self.rcw >= 68213.74:
-					self.lift_motor.set(0.7)
-					self.lift_motor_2.set(0.7)
-				elif self.rcw <= 68213.74 and self.rcw >= 34387.48:
-					self.lift_motor.set(0.65)
-					self.lift_motor_2.set(0.65)
-				elif self.rcw <= 34387.48 and self.rcw >= 102.00:
-					self.lift_motor.set(0.6)
-					self.lift_motor_2.set(0.6)
-				elif self.rcw <= 102.00:
-					self.lift_motor.set(0.0)
-					self.lift_motor_2.set(0.0)
-			elif state["timer_lift_taller"] < 200:
-				state["wheeler_motor"] = 0.3
-				print ("wheeler_motor")
-			elif state["timer_lift_taller"] < 300:
-				state["setpoint"] = -5200
-				if self.rcw >= 136427.48:
-					self.lift_motor.set(-0.8)
-					self.lift_motor_2.set(-0.8)
-				if self.rcw <= 136427.48 and self.rcw >= 116019.48:
-					self.lift_motor.set(-0.75)
-					self.lift_motor_2.set(-0.75)
-				elif self.rcw <= 116019.48 and self.rcw >= 68213.74:
-					self.lift_motor.set(-0.7)
-					self.lift_motor_2.set(-0.7)
-				elif self.rcw <= 68213.74 and self.rcw >= 34387.48:
-					self.lift_motor.set(-0.65)
-					self.lift_motor_2.set(-0.65)
-				elif self.rcw <= 34387.48 and self.rcw >= 102.00:
-					self.lift_motor.set(-0.6)
-					self.lift_motor_2.set(-0.6)
-				elif self.rcw <= 102.00:
-					self.lift_motor.set(0.0)
-					self.lift_motor_2.set(0.0)
+			if state["timer_lift_taller"] < 200:
+				state["lift_motor"] = 1
+			elif state["timer_lift_taller"] < 235:
+				state["wheeler_motor"] = 1
+			elif state["timer_lift_taller"] < 435:
+				state["lift_motor"] = -1
 			else:
 				state["timer_lift_taller"] = 0
 				state["posicion"] = "neutral"
@@ -403,14 +242,11 @@ class MyRobot(wpilib.TimedRobot):
 
 	def PID (self):
 
-		error = state["setpoint"] - self.encoder.get()
+		error = state["setpoint"] - 400#self.encoder.get()
 		self.integral = self.integral + (error*.02)
 		derivative = (error - self.previous_error) / .02
 		self.rcw = self.P*error + self.I*self.integral + self.D*derivative
 		# print (self.rcw)
-
-		
-
 
 
 #funcion para correr el código del robot utlizando
