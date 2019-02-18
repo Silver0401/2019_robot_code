@@ -64,13 +64,12 @@ def read_abilities_inputs(puerto_del_control):
 	eje_t = abilities_controller.getZ()
 	eje_z =abilities_controller.getThrottle()
 
-	button_bajo_piston = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_bajo_piston)
 	button_medio_piston = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_medio_piston)
 	button_alto_piston = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_alto_piston)
 
 	button_medio_garra = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_medio_garra)
 	button_alto_garra = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_alto_garra)
-	button_bajo_garra = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_bajo_garra)
+
 	# Uso de los botones
 
 
@@ -81,8 +80,6 @@ def read_abilities_inputs(puerto_del_control):
 		state["lift_motor"] = -1
 	else:
 		state["lift_motor"] = 0
-
-
 
 
 
@@ -145,26 +142,11 @@ def read_abilities_inputs(puerto_del_control):
 		state["claw_motor"] = 0
 
 
-	#Encoders
 
 
-# def setSetpoint(self, setpoint):
-# 	self.setpoint = setpoint
 
-# def PID (self):
 
-# 	error = self.setpoint - self.encoder.get()
-# 	self.integral = self.integral + (error*.02)
-# 	derivative = (error - self.previous_error) / .02
-# 	self.rcw = self.P*error + self.I*self.integral + self.D*derivative
-# 	print(self.rcw)
 
-# def execute (self):
-
-# 	self.PID()
-# 	self.lift.set(self.rcw)	
-
-	
 
 
 

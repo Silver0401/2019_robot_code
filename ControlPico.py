@@ -16,6 +16,3 @@ subir_plataforma_alto_garra = 5 # LB_button
 
 turbo = 10
 acomodarse = 9
-
-subir_plataforma_bajo_piston = 16
-subir_plataforma_bajo_garra = 17
