@@ -15,27 +15,27 @@ elif state["Controller"] == "ControlPelon":
 
 
 
-def read_control_inputs(tipo_de_control):
+def read_control_inputs(control_type):
 
-	if tipo_de_control == "PacificRim":
+	if control_type == "PacificRim":
 
 		read_chasis_inputs(0)
 		read_abilities_inputs(1)
 
-	elif tipo_de_control == "ControlPico" or tipo_de_control == "ControlPelon":
+	elif control_type == "ControlPico" or control_type == "ControlPelon":
 
 		read_abilities_inputs(0)
 		read_chasis_inputs(0)
 
 	else:
 
-		print ("tipo de control inexistente")
-		wpilib.DriverStation.reportWarning(str("tipo de control inexistente"),True)
+		print ("Non-existent control type")
+		wpilib.DriverStation.reportWarning(str("Non-existent control type"),True)
 
 
-def read_chasis_inputs(puerto_del_control):
+def read_chasis_inputs(control_port):
 
-	chasis_controller = wpilib.Joystick(puerto_del_control)
+	chasis_controller = wpilib.Joystick(control_port)
 
 	x = chasis_controller.getX()
 	state["mov_x"] = x
@@ -46,35 +46,36 @@ def read_chasis_inputs(puerto_del_control):
 	z = chasis_controller.getRawAxis(4)
 	state["mov_z"] = z
 
-	button_1 = chasis_controller.getRawButton(Controller_inputs.acomodarse)
+	button_1 = chasis_controller.getRawButton(Controller_inputs.accomodate)
 	state["align_activated"] = button_1
 
 	button_2 = chasis_controller.getRawButton(Controller_inputs.turbo)
 	state["turbo_activated"] = button_2
 
 
-def read_abilities_inputs(puerto_del_control):
+def read_abilities_inputs(control_port):
 
-	abilities_controller = wpilib.Joystick(puerto_del_control)
+	abilities_controller = wpilib.Joystick(control_port)
 
 	# botones del elevador y predeterminados
 
-	button_lift_up = abilities_controller.getRawButton(Controller_inputs.subir_manualmente)
-	button_lift_down = abilities_controller.getRawButton(Controller_inputs.bajar_manualmente)
+	button_lift_up = abilities_controller.getRawButton(Controller_inputs.up_by_hand)
+	button_lift_down = abilities_controller.getRawButton(Controller_inputs.down_by_hand)
 	eje_t = abilities_controller.getZ()
 	eje_z =abilities_controller.getThrottle()
 
-	button_medio_piston = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_medio_piston)
-	button_alto_piston = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_alto_piston)
+	button_medio_piston = abilities_controller.getRawButton(Controller_inputs.up_platform_middle_piston)
+	button_alto_piston = abilities_controller.getRawButton(Controller_inputs.up_platform_high_piston)
 
-	button_medio_garra = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_medio_garra)
-	button_alto_garra = abilities_controller.getRawButton(Controller_inputs.subir_plataforma_alto_garra)
+	button_medio_garra = abilities_controller.getRawButton(Controller_inputs.up_platform_middle_claw)
+	button_alto_garra = abilities_controller.getRawButton(Controller_inputs.up_platform_high_claw
+		)
 
 	# Uso de los botones
 
 
 	if button_lift_up and state["Controller"] == "PacificRim" or state["Controller"] == "ControlPico" and eje_t > 0:
-		state["lift_motor"] = 1
+		state["lift_motor"] = 0.5
 
 	elif button_lift_down and state["Controller"] == "PacificRim" or state["Controller"] == "ControlPico" and eje_z > 0:
 		state["lift_motor"] = -1
@@ -84,34 +85,34 @@ def read_abilities_inputs(puerto_del_control):
 	
 	if button_medio_piston:
 
-		state["posicion"] = "media"
-		state["mecanismo"] = "piston"
+		state["position"] = "media"
+		state["mechanism"] = "piston"
 
 	elif button_alto_piston:
 
-		state["posicion"] = "alta"
-		state["mecanismo"] = "piston"
+		state["position"] = "high"
+		state["mechanism"] = "piston"
 
 
 	elif button_medio_garra:
 
-		state["posicion"] = "media"
-		state["mecanismo"] = "garra"
+		state["position"] = "media"
+		state["mechanism"] = "garra"
 
 
 	elif button_alto_garra:
 
-		state["posicion"] = "alta"
-		state["mecanismo"] = "garra"
+		state["position"] = "high"
+		state["mechanism"] = "garra"
 
 
 	#Inputs de Solenoides, pistones, wheelers y subir o bajar garra
 
 
-	succionar_wheelers = abilities_controller.getRawButton(Controller_inputs.succionar_wheelers)  
-	aventar_wheelers = abilities_controller.getRawButton(Controller_inputs.aventar_wheelers)
-	subir_bajar_garra = abilities_controller.getRawButton(Controller_inputs.prender_garra)
-	turn_piston_on = abilities_controller.getRawButton(Controller_inputs.prender_y_apagar_piston)
+	succionar_wheelers = abilities_controller.getRawButton(Controller_inputs.sucks_wheelers)  
+	aventar_wheelers = abilities_controller.getRawButton(Controller_inputs.throw_wheelers)
+	subir_bajar_garra = abilities_controller.getRawButton(Controller_inputs.claw_turn_on)
+	turn_piston_on = abilities_controller.getRawButton(Controller_inputs.on_and_off_piston)
 	
 	#Configuracion para el uso de pistones
 
@@ -139,20 +140,20 @@ def read_abilities_inputs(puerto_del_control):
 
 	#Configuracion garra
 
-	if subir_bajar_garra or state["timer_garra"] != 0:
-		state["timer_garra"] += 1
-		if state["posicion_garra"] == "abajo":
-			if state["timer_garra"] < 100: 
+	if subir_bajar_garra or state["claw_timer"] != 0:
+		state["claw_timer"] += 1
+		if state["claw_position"] == "abajo":
+			if state["claw_timer"] < 100: 
 				state["claw_motor"] = 0.5
 			else:
-				state["timer_garra"] = 0
-				state["posicion_garra"] = "arriba"
-		elif state["posicion_garra"] == "arriba":	
-			if state["timer_garra"] < 100: 
+				state["claw_timer"] = 0
+				state["claw_position"] = "up"
+		elif state["claw_position"] == "up":	
+			if state["claw_timer"] < 100: 
 				state["claw_motor"] = -0.5
 			else:
-				state["timer_garra"] = 0
-				state["posicion_garra"] = "abajo"
+				state["claw_timer"] = 0
+				state["claw_position"] = "abajo"
 	else:
 		state["claw_motor"] = 0
 	

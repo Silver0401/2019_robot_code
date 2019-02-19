@@ -21,10 +21,9 @@ state = {
 	"timer_piston":0,
 	"claw_motor": 0,
 	"wheeler_motor": 0,
-	"timer_garra":0,
-	"posicion_garra": "arriba",
+	"claw_timer":0,
+	"claw_position": "up",
 	
-
 
 # Variables del Elevador
 
@@ -32,8 +31,8 @@ state = {
 	"timer_lift_low": 0,
 	"timer_lift_middle": 0,
 	"timer_lift_taller": 0,
-	"posicion" : "neutral",
-	"mecanismo": "neutral",
+	"position" : "neutral",
+	"mechanism": "neutral",
 	"setpoint" : 0
 
 }

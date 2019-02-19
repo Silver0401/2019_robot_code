@@ -1,4 +1,6 @@
 
+
+
 #Librerias necesarias para el uso de todo el codigo
 
 import wpilib
@@ -56,9 +58,9 @@ class MyRobot(wpilib.TimedRobot):
 
 		#sensores
 
-		self.sensor_izquierdo = wpilib.DigitalInput(0)
-		self.sensor_principal = wpilib.DigitalInput(1)
-		self.sensor_derecho = wpilib.DigitalInput(2)
+		self.left_sensor = wpilib.DigitalInput(0)
+		self.principal_sensor = wpilib.DigitalInput(1)
+		self.right_sensor = wpilib.DigitalInput(2)
 
 
 		#Unión de los motores para su funcionamiento
@@ -70,6 +72,7 @@ class MyRobot(wpilib.TimedRobot):
 			self.front_right_motor,
 			self.rear_right_motor)
 
+
 		
 
 	def autonomousInit(self):
@@ -80,47 +83,82 @@ class MyRobot(wpilib.TimedRobot):
 		
 	def autonomousPeriodic(self):
 
-		state["timer_piston"] += 1
 
-		# # Avanzar 2.5s girar 1s avanzar 1s girar 1s avanzar 3s girar 1s avanzar 2s
-		if self.timer.get() < 2.5:
-			self.drive.driveCartesian(1,0,0,0)
+		def Encoder(setpoint):
 
-		elif self.timer.get() > 2.5 and self.timer.get() < 3.5:
-			self.drive.driveCartesian(0,0,1,0)
+			self.PID()
+			state["setpoint"] = setpoint
 
-		elif self.timer.get() > 3.5 and self.timer.get() < 4.5:
-			self.drive.driveCartesian(1,0,0,0)
+			if self.rcw >= 660:
+				self.lift_motor.set(0.5)
+				self.lift_motor_2.set(0.5)
+			elif self.rcw <= 660 and self.rcw >= 460:
+				self.lift_motor.set(0.4)
+				self.lift_motor_2.set(0.4)
+			elif self.rcw <= 460 and self.rcw >= 300:
+				self.lift_motor.set(0.4)
+				self.lift_motor_2.set(0.4)
+			elif self.rcw <= 300 and self.rcw >= 200:
+				self.lift_motor.set(0.3)
+				self.lift_motor_2.set(0.3)
+			elif self.rcw <= 200 and self.rcw >= 102:
+				self.lift_motor.set(0.3)
+				self.lift_motor_2.set(0.3)
+			elif self.rcw <= 102.00:
+				self.lift_motor.set(0)
+				self.lift_motor_2.set(0)
 
-		elif self.timer.get() > 4.5 and self.timer.get() < 5.5:
-			self.drive.driveCartesian(0,0,1,0)
 
-		elif self.timer.get() > 5.5 and self.timer.get() < 6.5:
-			self.drive.driveCartesian(1,0,0,0)
-
-		elif self.timer.get() > 6.5 and self.timer.get() < 9.5:
-			self.drive.driveCartesian(1,0,0,0)
-
-		elif self.timer.get() > 9.5 and self.timer.get() < 10.5:
-			self.drive.driveCartesian(0,0,1,0)
-
-		elif self.timer.get() > 10.5 and self.timer.get() < 12.5:
-			self.drive.driveCartesian(1,0,0,0)
-
-		# elif self.timer.get() > 26.5 and self.timer.get() < 29.5:
-		# 	self.drive.driveCartesian(1,0,0,0)
-		# elif self.timer.get() > 29.5 and self.timer.get() < 31.5:
-		# 	self.drive.driveCartesian(0,0,-1,0)
+		if self.timer.get() < 2.6:
+			self.drive.driveCartesian(0,0.3,0,0) #adelante
+		elif self.timer.get() < 4.45:
+			self.drive.driveCartesian(0.4,0,0,0) # derecha
+		elif self.timer.get() < 4.50:
+			self.drive.driveCartesian(0,0,0.4,0)	
+		elif self.timer.get() < 5.45:
+			self.drive.driveCartesian(0,0.3,0,0) # adelante poquito	
+		elif self.timer.get() < 9.9:
+			Encoder(3600)
+		elif self.timer.get() < 10.2:
+			self.lift_motor_2.set(0)
+			self.lift_motor.set(0)
+			self.piston.set(False)
+		elif self.timer.get() < 10.7:
+			self.piston.set(True)
+		elif self.timer.get() < 11.2:
+			self.piston.set(False)
+		elif self.timer.get() < 12.7:
+			self.lift_motor.set(-0.4)
+			self.lift_motor_2.set(-0.4)
 		else:
 			self.drive.driveCartesian(0,0,0,0)
-			#gire en direccion contraria en z 8 seg, avanza por 5 seg gira a la derecha 2 seg avanza 3 gira a la izq 2 seg
-	
+			self.lift_motor.set(0)
+			self.lift_motor_2.set(0)
+		
+
 
 
 	def teleopPeriodic(self):
 
 		self.PID()
 		self.timer.start()
+
+		def Encoder(setpoint):
+
+			state["setpoint"] = setpoint
+
+			if self.rcw >= 660:
+				state["lift_motor"] = 0.5
+			elif self.rcw <= 660 and self.rcw >= 460:
+				state["lift_motor"] = 0.45
+			elif self.rcw <= 460 and self.rcw >= 300:
+				state["lift_motor"] = 0.4
+			elif self.rcw <= 300 and self.rcw >= 200:
+				state["lift_motor"] = 0.35
+			elif self.rcw <= 200 and self.rcw >= 102:
+				state["lift_motor"] = 0.3
+			elif self.rcw <= 102.00:
+				state["lift_motor"] = 0
 
 		#se leen constantemente los botones,joysticks y cambia de modalidades de controles
 		
@@ -132,17 +170,17 @@ class MyRobot(wpilib.TimedRobot):
 		y = state["mov_y"] 
 		z = state["mov_z"] 
 
-		powerX = 0 if x < 0.25 and x > -0.25 else x
-		powerY = 0 if y < 0.25 and y > -0.25 else y
-		powerZ = 0 if z < 0.25 and z > -0.25 else z
+		powerX = 0 if x < 0.10 and x > -0.10 else x
+		powerY = 0 if y < 0.10 and y > -0.10 else y
+		powerZ = 0 if z < 0.10 and z > -0.10 else z
 	
 
 		if state["align_activated"]:
-			if self.sensor_principal.get():
+			if self.principal_sensor.get():
 				self.drive.driveCartesian(0, 0, 0, 0)
-			elif self.sensor_izquierdo.get():
+			elif self.left_sensor.get():
 				self.drive.driveCartesian(0.4, 0, 0, 0)
-			elif self.sensor_derecho.get():
+			elif self.right_sensor.get():
 				self.drive.driveCartesian(-0.4, 0 ,0, 0)
 			else:
 				self.drive.driveCartesian(0, -0.5, 0, 0)
@@ -157,68 +195,68 @@ class MyRobot(wpilib.TimedRobot):
 
 		# Configuracion para el elevador automaticamente
 
-		# Hatch panel medio; garra y piston
+		# Hatch panel medio; claw y piston
 		
 
-		if state["posicion"] == "media" and state["mecanismo"] == "piston":
+		if state["position"] == "media" and state["mechanism"] == "piston":
 			state["timer_lift_middle"] += 1
-			if state["timer_lift_middle"] < 150:
-				state["lift_motor"] = 1
-			elif state["timer_lift_middle"] < 185:
+			if state["timer_lift_middle"] < 230:
+				Encoder(3300)
+			elif state["timer_lift_middle"] < 265:
 				state["piston_activated"] = True
-			elif state["timer_lift_middle"] < 200:
+			elif state["timer_lift_middle"] < 300:
 				state["piston_activated"] = False
-			elif state["timer_lift_middle"] < 350:
-				state["lift_motor"] = -1
+			elif state["timer_lift_middle"] < 500:
+				state["lift_motor"] = -0.5
 			else:
 				state["timer_lift_middle"] = 0
-				state["posicion"] = "neutral"
-				state["mecanismo"] = "neutral"
+				state["position"] = "neutral"
+				state["mechanism"] = "neutral"
 
-		if state["posicion"] == "media" and state["mecanismo"] == "garra":
+		if state["position"] == "media" and state["mechanism"] == "claw":
 			state["timer_lift_middle"] += 1
-			if state["timer_lift_middle"] < 150:
-				state["lift_motor"] = 1
-			elif state["timer_lift_middle"] < 185:
-				state["wheeler_motor"] = 1
-			elif state["timer_lift_middle"] < 335:
-				state["lift_motor"] = -1
+			if state["timer_lift_middle"] < 200:
+				Encoder(3300)
+			elif state["timer_lift_middle"] < 235:
+				state["wheeler_motor"] = 0.5
+			elif state["timer_lift_middle"] < 435:
+				state["lift_motor"] = -0.5
 			else:
 				state["timer_lift_middle"] = 0
-				state["posicion"] = "neutral"
-				state["mecanismo"] = "neutral"
+				state["position"] = "neutral"
+				state["mechanism"] = "neutral"
 
-		# Hatch panel alto; garra y piston
+		# Hatch panel alto; claw y piston
 
-		if state["posicion"] == "alta" and state["mecanismo"] == "piston":
+		if state["position"] == "high" and state["mechanism"] == "piston":
 			state["timer_lift_taller"] += 1
-			if state["timer_lift_taller"] < 200:
-				state["lift_motor"] = 1
-			elif state["timer_lift_taller"] < 235:
+			if state["timer_lift_taller"] < 350:
+				Encoder(4011)
+			elif state["timer_lift_taller"] < 385:
 				state["piston_activated"] = True
-			elif state["timer_lift_taller"] < 270:
+			elif state["timer_lift_taller"] < 400:
 				state["piston_activated"] = False
-			elif state["timer_lift_taller"] < 470:
-				state["lift_motor"] = -1
+			elif state["timer_lift_taller"] < 600:
+				state["lift_motor"] = -0.5
 			else:
 				state["timer_lift_taller"] = 0
-				state["posicion"] = "neutral"
-				state["mecanismo"] = "neutral"
+				state["position"] = "neutral"
+				state["mechanism"] = "neutral"
 
-		if state["posicion"] == "alta" and state["mecanismo"] == "garra":
+		if state["position"] == "high" and state["mechanism"] == "claw":
 			state["timer_lift_taller"] += 1
 			if state["timer_lift_taller"] < 200:
-				state["lift_motor"] = 1
+				Encoder(4011)
 			elif state["timer_lift_taller"] < 235:
 				state["wheeler_motor"] = 1
 			elif state["timer_lift_taller"] < 435:
-				state["lift_motor"] = -1
+				state["lift_motor"] = -0.5
 			else:
 				state["timer_lift_taller"] = 0
-				state["posicion"] = "neutral"
-				state["mecanismo"] = "neutral"
+				state["position"] = "neutral"
+				state["mechanism"] = "neutral"
 
-		# Configuracion para mover el elevador y la garra manualmente 
+		# Configuracion para mover el elevador y la claw manualmente 
 
 
 		self.lift_motor.set(state["lift_motor"])
@@ -247,7 +285,7 @@ class MyRobot(wpilib.TimedRobot):
 		derivative = (error - self.previous_error) / .02
 		self.rcw = self.P*error + self.I*self.integral + self.D*derivative
 		# print (self.rcw)
-
+		print (self.encoder.get())
 
 #funcion para correr el código del robot utlizando
 # este archivo como el principal
