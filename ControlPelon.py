@@ -1,23 +1,20 @@
-prender_piston = 3
-apagar_piston = 5 
+on_and_off_piston = 2 # boton B
+
+claw_turn_on = 20 #POV ARRIBA
+claw_turn_off = 30  #POV ABAJO
+
+sucks_wheelers = 4 # boton Y
+throw_wheelers = 3 # boton X
+
+up_by_hand = 11 # Eje z / gatillo RT
+down_by_hand = 12 # Eje t / gatillo LT
+
+up_platform_middle_piston = 8 # start_ button
+up_platform_high_piston = 6 # RB_button
+
+up_platform_middle_claw = 7 #back_button
+up_platform_high_claw = 5 # LB_button
 
 
-prender_garra = 4
-apagar_garra = 6
-
-subir_manualmente = 11
-bajar_manualmente = 12
-
-subir_plataforma_medio_piston = 10
-subir_plataforma_alto_piston = 8
-
-subir_plataforma_medio_garra = 9
-subir_plataforma_alto_garra = 7
-
-
-turbo = 2
-acomodarse = 1
-
-
-subir_plataforma_bajo_piston = 16
-subir_plataforma_bajo_garra = 17
+turbo = 10
+accomodate = 9

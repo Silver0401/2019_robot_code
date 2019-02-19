@@ -152,25 +152,4 @@ def read_abilities_inputs(control_port):
 
 
 
-	# if subir_bajar_garra or state["claw_timer"] != 0:
-	# 	state["claw_timer"] += 1
-	# 	if state["claw_position"] == "abajo":
-	# 		if state["claw_timer"] < 100: 
-	# 			state["claw_motor"] = 0.8
-	# 		else:
-	# 			state["claw_timer"] = 0
-	# 			state["claw_position"] = "up"
-	# 	elif state["claw_position"] == "up":	
-	# 		if state["claw_timer"] < 100: 
-	# 			state["claw_motor"] = -0.5
-
-	# 		else:
-	# 			state["claw_timer"] = 0
-	# 			state["claw_position"] = "abajo"
-	# else:
-	# 	state["claw_motor"] = 0
-	# 	state[]
-
-
-		
 
