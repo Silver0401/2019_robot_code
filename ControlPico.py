@@ -1,7 +1,9 @@
 on_and_off_piston = 2 # boton B
-claw_turn_on = 1 # boton A
 
-sucks_wheelers = 4 # boton 
+claw_turn_on = 20 #POV ARRIBA
+claw_turn_off = 30  #POV ABAJO
+
+sucks_wheelers = 4 # boton Y
 throw_wheelers = 3 # boton X
 
 up_by_hand = 11 # Eje z / gatillo RT

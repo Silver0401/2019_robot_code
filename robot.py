@@ -143,6 +143,7 @@ class MyRobot(wpilib.TimedRobot):
 		self.PID()
 		self.timer.start()
 
+
 		def Encoder(setpoint):
 
 			state["setpoint"] = setpoint
@@ -200,13 +201,13 @@ class MyRobot(wpilib.TimedRobot):
 
 		if state["position"] == "media" and state["mechanism"] == "piston":
 			state["timer_lift_middle"] += 1
-			if state["timer_lift_middle"] < 230:
-				Encoder(3300)
-			elif state["timer_lift_middle"] < 265:
+			if state["timer_lift_middle"] < 240:
+				Encoder(3500) 
+			elif state["timer_lift_middle"] < 275:
 				state["piston_activated"] = True
-			elif state["timer_lift_middle"] < 300:
+			elif state["timer_lift_middle"] < 310:
 				state["piston_activated"] = False
-			elif state["timer_lift_middle"] < 500:
+			elif state["timer_lift_middle"] < 510:
 				state["lift_motor"] = -0.5
 			else:
 				state["timer_lift_middle"] = 0
@@ -216,7 +217,7 @@ class MyRobot(wpilib.TimedRobot):
 		if state["position"] == "media" and state["mechanism"] == "claw":
 			state["timer_lift_middle"] += 1
 			if state["timer_lift_middle"] < 200:
-				Encoder(3300)
+				Encoder(3500)
 			elif state["timer_lift_middle"] < 235:
 				state["wheeler_motor"] = 0.5
 			elif state["timer_lift_middle"] < 435:
@@ -275,6 +276,8 @@ class MyRobot(wpilib.TimedRobot):
 			self.Compressor.stop()
 		else:
 			self.Compressor.start()
+
+		
 
 
 

@@ -59,8 +59,8 @@ def read_abilities_inputs(control_port):
 
 	# botones del elevador y predeterminados
 
-	button_lift_up = abilities_controller.getRawButton(Controller_inputs.up_by_hand)
-	button_lift_down = abilities_controller.getRawButton(Controller_inputs.down_by_hand)
+	POV = wpilib.interfaces.GenericHID(control_port)
+
 	eje_t = abilities_controller.getZ()
 	eje_z =abilities_controller.getThrottle()
 
@@ -68,16 +68,15 @@ def read_abilities_inputs(control_port):
 	button_alto_piston = abilities_controller.getRawButton(Controller_inputs.up_platform_high_piston)
 
 	button_medio_garra = abilities_controller.getRawButton(Controller_inputs.up_platform_middle_claw)
-	button_alto_garra = abilities_controller.getRawButton(Controller_inputs.up_platform_high_claw
-		)
+	button_alto_garra = abilities_controller.getRawButton(Controller_inputs.up_platform_high_claw)
 
 	# Uso de los botones
 
 
-	if button_lift_up and state["Controller"] == "PacificRim" or state["Controller"] == "ControlPico" and eje_t > 0:
+	if POV.getPOV() == 180 and state["Controller"] == "PacificRim" or state["Controller"] == "ControlPico" and eje_t > 0:
 		state["lift_motor"] = 0.5
 
-	elif button_lift_down and state["Controller"] == "PacificRim" or state["Controller"] == "ControlPico" and eje_z > 0:
+	elif POV.getPOV() == 0 and state["Controller"] == "PacificRim" or state["Controller"] == "ControlPico" and eje_z > 0:
 		state["lift_motor"] = -1
 	else:
 		state["lift_motor"] = 0
@@ -111,7 +110,10 @@ def read_abilities_inputs(control_port):
 
 	succionar_wheelers = abilities_controller.getRawButton(Controller_inputs.sucks_wheelers)  
 	aventar_wheelers = abilities_controller.getRawButton(Controller_inputs.throw_wheelers)
-	subir_bajar_garra = abilities_controller.getRawButton(Controller_inputs.claw_turn_on)
+
+	subir_garra = abilities_controller.getRawButton(Controller_inputs.claw_turn_on)
+	bajar_garra = abilities_controller.getRawButton(Controller_inputs.claw_turn_off)
+
 	turn_piston_on = abilities_controller.getRawButton(Controller_inputs.on_and_off_piston)
 	
 	#Configuracion para el uso de pistones
@@ -129,55 +131,46 @@ def read_abilities_inputs(control_port):
 	#Configuracion de los wheelers
 		
 	if succionar_wheelers:
-		state["wheeler_motor"] = -0.4
+		state["wheeler_motor"] = -0.85
 
 	elif aventar_wheelers:
-		state["wheeler_motor"] = 0.4
+		state["wheeler_motor"] = 0.85
 
 	else:
 		state["wheeler_motor"] = 0
 
 
-	#Configuracion garra
+	# Configuracion garra
 
-	if subir_bajar_garra or state["claw_timer"] != 0:
-		state["claw_timer"] += 1
-		if state["claw_position"] == "abajo":
-			if state["claw_timer"] < 100: 
-				state["claw_motor"] = 0.5
-			else:
-				state["claw_timer"] = 0
-				state["claw_position"] = "up"
-		elif state["claw_position"] == "up":	
-			if state["claw_timer"] < 100: 
-				state["claw_motor"] = -0.5
-			else:
-				state["claw_timer"] = 0
-				state["claw_position"] = "abajo"
+	if subir_garra and state["Controller"] == "PacificRim" or POV.getPOV() == 0 and state["Controller"] == "ControlPico":
+		state["claw_motor"] = 0.6
+	elif bajar_garra and state["Controller"] == "PacificRim" or POV.getPOV() == 180 and state["Controller"] == "ControlPico":
+		state["claw_motor"] = -0.4
 	else:
 		state["claw_motor"] = 0
-	
+
+
+
+
+	# if subir_bajar_garra or state["claw_timer"] != 0:
+	# 	state["claw_timer"] += 1
+	# 	if state["claw_position"] == "abajo":
+	# 		if state["claw_timer"] < 100: 
+	# 			state["claw_motor"] = 0.8
+	# 		else:
+	# 			state["claw_timer"] = 0
+	# 			state["claw_position"] = "up"
+	# 	elif state["claw_position"] == "up":	
+	# 		if state["claw_timer"] < 100: 
+	# 			state["claw_motor"] = -0.5
+
+	# 		else:
+	# 			state["claw_timer"] = 0
+	# 			state["claw_position"] = "abajo"
+	# else:
+	# 	state["claw_motor"] = 0
+	# 	state[]
 
 
 		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

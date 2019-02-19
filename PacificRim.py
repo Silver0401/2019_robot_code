@@ -1,17 +1,19 @@
-prender_piston = 3
+on_and_off_piston = 2
 
-prender_garra = 4
-apagar_garra = 6
+claw_turn_on = 6 
+claw_turn_off = 4  
 
-subir_manualmente = 11
-bajar_manualmente = 12
+sucks_wheelers = 5 
+throw_wheelers = 3 
 
-subir_plataforma_medio_piston = 10
-subir_plataforma_alto_piston = 8
+up_by_hand = 15 # POV arriba
+down_by_hand = 17 #POV abajo
 
-subir_plataforma_medio_garra = 9
-subir_plataforma_alto_garra = 7
+up_platform_middle_piston = 10 
+up_platform_high_piston = 8 
 
+up_platform_middle_claw = 9
+up_platform_high_claw = 7 
 
-turbo = 2
-acomodarse = 1
+turbo = 10
+accomodate = 1

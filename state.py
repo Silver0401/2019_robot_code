@@ -23,6 +23,7 @@ state = {
 	"wheeler_motor": 0,
 	"claw_timer":0,
 	"claw_position": "up",
+	"subir_bajar_garra": False,
 	
 
 # Variables del Elevador
