@@ -131,10 +131,10 @@ def read_abilities_inputs(control_port):
 	#Configuracion de los wheelers
 		
 	if succionar_wheelers:
-		state["wheeler_motor"] = -0.85
+		state["wheeler_motor"] = -1
 
 	elif aventar_wheelers:
-		state["wheeler_motor"] = 0.85
+		state["wheeler_motor"] = 1
 
 	else:
 		state["wheeler_motor"] = 0
@@ -142,12 +142,25 @@ def read_abilities_inputs(control_port):
 
 	# Configuracion garra
 
-	if subir_garra and state["Controller"] == "PacificRim" or POV.getPOV() == 0 and state["Controller"] == "ControlPico":
-		state["claw_motor"] = 0.6
-	elif bajar_garra and state["Controller"] == "PacificRim" or POV.getPOV() == 180 and state["Controller"] == "ControlPico":
-		state["claw_motor"] = -0.4
-	else:
-		state["claw_motor"] = 0
+	if subir_garra or state["claw_timer"] > 0 and state["Controller"] == "PacificRim" or POV.getPOV() == 0 and state["Controller"] == "ControlPico":
+		state["claw_timer"] += 1
+		if state["claw_timer"] < 50:
+			state["claw_motor"] = 0.4
+		elif state["claw_timer"] < 100:
+			state["claw_motor"] = 0
+		else:
+			state["claw_timer"] = 0
+		
+
+	if bajar_garra or state["claw_timer"] < 0 and state["Controller"] == "PacificRim" or POV.getPOV() == 180 and state["Controller"] == "ControlPico":
+		state["claw_timer"] -= 1
+		if state["claw_timer"] > -50:
+			state["claw_motor"] = -0.4
+		elif state["claw_timer"] > -100:
+			state["claw_motor"] = 0
+
+		else:
+			state["claw_timer"] = 0
 
 
 

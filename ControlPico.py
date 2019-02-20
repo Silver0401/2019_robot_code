@@ -1,3 +1,4 @@
+
 on_and_off_piston = 2 # boton B
 
 claw_turn_on = 20 #POV ARRIBA

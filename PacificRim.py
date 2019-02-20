@@ -3,8 +3,8 @@ on_and_off_piston = 2
 claw_turn_on = 6 
 claw_turn_off = 4  
 
-sucks_wheelers = 5 
-throw_wheelers = 3 
+sucks_wheelers = 3 
+throw_wheelers = 5
 
 up_by_hand = 15 # POV arriba
 down_by_hand = 17 #POV abajo
