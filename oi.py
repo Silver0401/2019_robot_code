@@ -7,8 +7,8 @@ import wpilib
 if state["Controller"] == "PacificRim":
 	import PacificRim as Controller_inputs
 
-elif state["Controller"] == "ControlPico":
-	import ControlPico as Controller_inputs
+elif state["Controller"] == "ControlPiko":
+	import ControlPiko as Controller_inputs
 
 elif state["Controller"] == "ControlPelon":
 	import ControlPelon as Controller_inputs
@@ -22,7 +22,7 @@ def read_control_inputs(control_type):
 		read_chasis_inputs(0)
 		read_abilities_inputs(1)
 
-	elif control_type == "ControlPico" or control_type == "ControlPelon":
+	elif control_type == "ControlPiko" or control_type == "ControlPelon":
 
 		read_abilities_inputs(0)
 		read_chasis_inputs(0)
@@ -73,10 +73,10 @@ def read_abilities_inputs(control_port):
 	# Uso de los botones
 
 
-	if POV.getPOV() == 180 and state["Controller"] == "PacificRim" or state["Controller"] == "ControlPico" and eje_t > 0:
+	if POV.getPOV() == 180 and state["Controller"] == "PacificRim" or state["Controller"] == "ControlPiko" and eje_t > 0:
 		state["lift_motor"] = 0.5
 
-	elif POV.getPOV() == 0 and state["Controller"] == "PacificRim" or state["Controller"] == "ControlPico" and eje_z > 0:
+	elif POV.getPOV() == 0 and state["Controller"] == "PacificRim" or state["Controller"] == "ControlPiko" and eje_z > 0:
 		state["lift_motor"] = -1
 	else:
 		state["lift_motor"] = 0
@@ -142,26 +142,15 @@ def read_abilities_inputs(control_port):
 
 	# Configuracion garra
 
-	if subir_garra or state["claw_timer"] > 0 and state["Controller"] == "PacificRim" or POV.getPOV() == 0 and state["Controller"] == "ControlPico":
-		state["claw_timer"] += 1
-		if state["claw_timer"] < 50:
-			state["claw_motor"] = 0.4
-		elif state["claw_timer"] < 100:
-			state["claw_motor"] = 0
-		else:
-			state["claw_timer"] = 0
+	if subir_garra or state["claw_timer"] > 0 and state["Controller"] == "PacificRim" or POV.getPOV() == 0 and state["Controller"] == "ControlPiko":
+		state["claw_motor"] = 1
 		
 
-	if bajar_garra or state["claw_timer"] < 0 and state["Controller"] == "PacificRim" or POV.getPOV() == 180 and state["Controller"] == "ControlPico":
-		state["claw_timer"] -= 1
-		if state["claw_timer"] > -50:
-			state["claw_motor"] = -0.4
-		elif state["claw_timer"] > -100:
-			state["claw_motor"] = 0
+	elif bajar_garra or state["claw_timer"] < 0 and state["Controller"] == "PacificRim" or POV.getPOV() == 180 and state["Controller"] == "ControlPiko":
+		state["claw_motor"] = -1
 
-		else:
-			state["claw_timer"] = 0
-
+	else:
+		state["claw_motor"] = 0
 
 
 

@@ -5,7 +5,7 @@ state = {
 
 # Control
 
-	"Controller": "PacificRim",
+	"Controller": "ControlPiko",
 
 #Variables del Chasis
 
