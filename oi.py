@@ -46,11 +46,11 @@ def read_chasis_inputs(control_port):
 	z = chasis_controller.getRawAxis(4)
 	state["mov_z"] = z
 
-	button_1 = chasis_controller.getRawButton(Controller_inputs.accomodate)
-	state["align_activated"] = button_1
+	align_button = chasis_controller.getRawButton(Controller_inputs.accomodate)
+	state["align_activated"] = align_button
 
-	button_2 = chasis_controller.getRawButton(Controller_inputs.turbo)
-	state["turbo_activated"] = button_2
+	# button_2 = chasis_controller.getRawButton(Controller_inputs.turbo)
+	# state["turbo_activated"] = button_2
 
 
 def read_abilities_inputs(control_port):
@@ -67,8 +67,9 @@ def read_abilities_inputs(control_port):
 	button_medio_piston = abilities_controller.getRawButton(Controller_inputs.up_platform_middle_piston)
 	button_alto_piston = abilities_controller.getRawButton(Controller_inputs.up_platform_high_piston)
 
-	button_medio_garra = abilities_controller.getRawButton(Controller_inputs.up_platform_middle_claw)
-	button_alto_garra = abilities_controller.getRawButton(Controller_inputs.up_platform_high_claw)
+
+	button_2 = abilities_controller.getRawButton(Controller_inputs.turbo)
+	state["turbo_activated"] = button_2
 
 	# Uso de los botones
 
@@ -93,26 +94,10 @@ def read_abilities_inputs(control_port):
 		state["mechanism"] = "piston"
 
 
-	elif button_medio_garra:
-
-		state["position"] = "media"
-		state["mechanism"] = "garra"
 
 
-	elif button_alto_garra:
+	#Inputs de Solenoides, pistones, wheelers y subir o bajar garra (los cuales se quitaron del robot asi que ya solo queda lo del piston)
 
-		state["position"] = "high"
-		state["mechanism"] = "garra"
-
-
-	#Inputs de Solenoides, pistones, wheelers y subir o bajar garra
-
-
-	succionar_wheelers = abilities_controller.getRawButton(Controller_inputs.sucks_wheelers)  
-	aventar_wheelers = abilities_controller.getRawButton(Controller_inputs.throw_wheelers)
-
-	subir_garra = abilities_controller.getRawButton(Controller_inputs.claw_turn_on)
-	bajar_garra = abilities_controller.getRawButton(Controller_inputs.claw_turn_off)
 
 	turn_piston_on = abilities_controller.getRawButton(Controller_inputs.on_and_off_piston)
 	
@@ -128,29 +113,7 @@ def read_abilities_inputs(control_port):
 			state["timer_piston"] = 0
 
 
-	#Configuracion de los wheelers
-		
-	if succionar_wheelers:
-		state["wheeler_motor"] = -1
 
-	elif aventar_wheelers:
-		state["wheeler_motor"] = 1
-
-	else:
-		state["wheeler_motor"] = 0
-
-
-	# Configuracion garra
-
-	if subir_garra or state["claw_timer"] > 0 and state["Controller"] == "PacificRim" or POV.getPOV() == 0 and state["Controller"] == "ControlPiko":
-		state["claw_motor"] = 1
-		
-
-	elif bajar_garra or state["claw_timer"] < 0 and state["Controller"] == "PacificRim" or POV.getPOV() == 180 and state["Controller"] == "ControlPiko":
-		state["claw_motor"] = -1
-
-	else:
-		state["claw_motor"] = 0
 
 
 
