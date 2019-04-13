@@ -15,13 +15,19 @@ state = {
 	"mov_y": 0,
 	"mov_z": 0,
 
-#Variables del Piston y garra
+#Variables del Piston e impulsor e impulsor motor
 
 	"piston_activated": False,
 	"timer_piston":0,
 	"claw_timer":0,
 	"claw_position": "up",
 	"subir_bajar_garra": False,
+	"timer_impulsor":0,
+	"impulsor_situation_trasero":0,
+	"impulsor_situation_front":0,
+	"impulsor_motor":0,
+	"timer_impulsor_motor":0,
+	"impulsor_on": False,
 	
 
 # Variables del Elevador

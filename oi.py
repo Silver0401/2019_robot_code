@@ -1,4 +1,3 @@
-
 # Se importa el control requerido automáticamente
 
 from state import state
@@ -111,6 +110,16 @@ def read_abilities_inputs(control_port):
 			state["piston_activated"] = False
 		else:
 			state["timer_piston"] = 0
+
+	impulsor_on = abilities_controller.getRawButton(Controller_inputs.on_and_off_impulsor)
+	state["impulsor_on"] = impulsor_on
+	#Configuracion para el uso de dobles impulsores
+
+
+
+
+
+
 
 
 
