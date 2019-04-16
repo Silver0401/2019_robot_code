@@ -5,7 +5,9 @@ state = {
 
 # Control
 
-	"Controller": "ControlPiko",
+	"Controller": "ControlPelon",
+
+	"codewide_breaker": False,
 
 #Variables del Chasis
 
@@ -19,9 +21,6 @@ state = {
 
 	"piston_activated": False,
 	"timer_piston":0,
-	"claw_timer":0,
-	"claw_position": "up",
-	"subir_bajar_garra": False,
 	"timer_impulsor":0,
 	"impulsor_situation_trasero":0,
 	"impulsor_situation_front":0,

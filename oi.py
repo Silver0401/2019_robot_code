@@ -56,6 +56,11 @@ def read_abilities_inputs(control_port):
 
 	abilities_controller = wpilib.Joystick(control_port)
 
+	# Codewide button breaker
+
+	button_breaker = abilities_controller.getRawButton(Controller_inputs.button_breaker)
+	state["codewide_breaker"] = button_breaker
+
 	# botones del elevador y predeterminados
 
 	POV = wpilib.interfaces.GenericHID(control_port)
@@ -93,14 +98,19 @@ def read_abilities_inputs(control_port):
 		state["mechanism"] = "piston"
 
 
-
-
 	#Inputs de Solenoides, pistones, wheelers y subir o bajar garra (los cuales se quitaron del robot asi que ya solo queda lo del piston)
 
+	impulsor_on = abilities_controller.getRawButton(Controller_inputs.on_and_off_impulsor)
+	state["impulsor_on"] = impulsor_on
 
 	turn_piston_on = abilities_controller.getRawButton(Controller_inputs.on_and_off_piston)
 	
-	#Configuracion para el uso de pistones
+	impulsor_on_button = abilities_controller.getRawButton(Controller_inputs.manual_impulsor_on)
+
+	impulsor_off_button = abilities_controller.getRawButton(Controller_inputs.manual_impulsor_off)
+
+
+	#Configuracion para el uso de pistones e impulsores
 
 	if turn_piston_on or state["timer_piston"] != 0:
 		state["timer_piston"] += 1
@@ -111,10 +121,16 @@ def read_abilities_inputs(control_port):
 		else:
 			state["timer_piston"] = 0
 
-	impulsor_on = abilities_controller.getRawButton(Controller_inputs.on_and_off_impulsor)
-	state["impulsor_on"] = impulsor_on
-	#Configuracion para el uso de dobles impulsores
 
+	if impulsor_on_button:
+
+		state["impulsor_situation_front"] = 1
+		state["impulsor_situation_trasero"] = 1
+
+	if impulsor_off_button:
+
+		state["impulsor_situation_front"] = 2
+		state["impulsor_situation_trasero"] = 2
 
 
 
